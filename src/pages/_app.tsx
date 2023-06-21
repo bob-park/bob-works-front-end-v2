@@ -1,8 +1,20 @@
 import '@/styles/globals.css';
 
+import { useState } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+
+// react-icon
+import { LuLayoutDashboard, LuLogOut } from 'react-icons/lu';
+import {
+  GrDocumentTime,
+  GrDocumentUpdate,
+  GrNotification,
+} from 'react-icons/gr';
+import { MdOutlineHolidayVillage } from 'react-icons/md';
+import { AiOutlineUnorderedList, AiOutlineSetting } from 'react-icons/ai';
+import { CgProfile } from 'react-icons/cg';
 
 // daisyui
 import {
@@ -15,14 +27,26 @@ import {
   Avatar,
   Drawer,
   Divider,
+  Tooltip,
 } from 'react-daisyui';
-import DropdownMenu from 'react-daisyui/dist/Dropdown/DropdownMenu';
 
 export default function App({ Component, pageProps }: AppProps) {
+  // state
   const [visible, setVisible] = useState<boolean>(false);
+
+  // router
+  const router = useRouter();
 
   const toggleVisible = () => {
     setVisible(!visible);
+  };
+
+  const activeMenuItem = (menuPath: string): string => {
+    if (router.pathname !== menuPath) {
+      return '';
+    }
+
+    return 'active';
   };
 
   return (
@@ -41,29 +65,44 @@ export default function App({ Component, pageProps }: AppProps) {
               </a>
             </div>
 
-            <Menu className="h-full w-80 p-2" compact="md">
+            <Menu className="h-full bg-base-100 w-80 p-2" compact="md">
               <Menu.Item>
-                <a>대시보드</a>
+                <a className={activeMenuItem('/')}>
+                  <LuLayoutDashboard />
+                  대시보드
+                </a>
               </Menu.Item>
               <Menu.Item></Menu.Item>
               <Menu.Title>
                 <h2>문서 결재</h2>
               </Menu.Title>
               <Menu.Item>
-                <a>결재 신청 목록</a>
+                <a>
+                  <AiOutlineUnorderedList />
+                  결재 신청 목록
+                </a>
               </Menu.Item>
               <Menu.Item>
-                <a>결재 대기 목록</a>
+                <a>
+                  <GrDocumentTime />
+                  결재 대기 목록
+                </a>
               </Menu.Item>
               <Menu.Item></Menu.Item>
               <Menu.Title>
                 <h2>문서 신청</h2>
               </Menu.Title>
               <Menu.Item>
-                <a>휴가계 신청</a>
+                <a>
+                  <GrDocumentUpdate />
+                  휴가계 신청
+                </a>
               </Menu.Item>
               <Menu.Item>
-                <a>휴일 근무 보고서 신청</a>
+                <a>
+                  <MdOutlineHolidayVillage />
+                  휴일 근무 보고서 신청
+                </a>
               </Menu.Item>
             </Menu>
           </aside>
@@ -104,13 +143,23 @@ export default function App({ Component, pageProps }: AppProps) {
               />
               <Dropdown.Menu className="w-48 bg-base-100 shadow-xl">
                 <Dropdown.Item>
+                  <GrNotification />
                   공지 <Badge color="primary">new</Badge>
                 </Dropdown.Item>
                 <hr />
-                <Dropdown.Item>프로필</Dropdown.Item>
-                <Dropdown.Item>설정</Dropdown.Item>
+                <Dropdown.Item>
+                  <CgProfile />
+                  프로필
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <AiOutlineSetting />
+                  설정
+                </Dropdown.Item>
                 <hr />
-                <Dropdown.Item>로그아웃</Dropdown.Item>
+                <Dropdown.Item>
+                  <LuLogOut />
+                  로그아웃
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Navbar.End>
@@ -120,14 +169,16 @@ export default function App({ Component, pageProps }: AppProps) {
         </div>
 
         <div className="absolute bottom-10 right-10">
-          <Avatar
-            className=""
-            size="sm"
-            shape="circle"
-            src="/customer_service_center.png"
-            border
-            color="ghost"
-          />
+          <Tooltip message="무엇을 도와드릴까요?">
+            <Avatar
+              className=""
+              size="sm"
+              shape="circle"
+              src="/customer_service_center.png"
+              border
+              color="ghost"
+            />
+          </Tooltip>
         </div>
       </Drawer>
     </>
