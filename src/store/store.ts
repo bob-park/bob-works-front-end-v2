@@ -4,7 +4,11 @@ import { createWrapper } from 'next-redux-wrapper';
 
 import rootSaga from './saga';
 
-const rootReducer = combineReducers({});
+import { USER, userReducer } from './user';
+
+const rootReducer = combineReducers({
+  [USER]: userReducer,
+});
 
 function rootStore() {
   // saga

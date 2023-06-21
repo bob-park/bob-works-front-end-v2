@@ -1,9 +1,16 @@
 import '@/styles/globals.css';
 
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+
+// hooks
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
+
+// store
+import { wrapper } from '@/store/store';
+import { userActions } from '@/store/user';
 
 // react-icon
 import { LuLayoutDashboard, LuLogOut } from 'react-icons/lu';
@@ -30,12 +37,29 @@ import {
   Tooltip,
 } from 'react-daisyui';
 
-export default function App({ Component, pageProps }: AppProps) {
+// user actions
+const { requestGetUser } = userActions;
+
+function App({ Component, pageProps }: AppProps) {
   // state
   const [visible, setVisible] = useState<boolean>(false);
 
   // router
   const router = useRouter();
+
+  // store
+  const { isLoading, isLoggedIn, user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  // use effect
+  useLayoutEffect(() => {
+    dispatch(
+      requestGetUser({
+        exceptionHandle: () =>
+          router.push('/api/oauth2/authorization/bob-works'),
+      }),
+    );
+  }, []);
 
   const toggleVisible = () => {
     setVisible(!visible);
@@ -184,3 +208,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   );
 }
+
+export default wrapper.withRedux(App);
