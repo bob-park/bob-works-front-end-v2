@@ -59,7 +59,7 @@ function App({ Component, pageProps }: AppProps) {
           router.push('/api/oauth2/authorization/bob-works'),
       }),
     );
-  }, []);
+  }, [!user && !isLoggedIn]);
 
   const toggleVisible = () => {
     setVisible(!visible);
@@ -158,13 +158,12 @@ function App({ Component, pageProps }: AppProps) {
             </div>
           </Navbar.Start>
           <Navbar.End>
+            <div className="mr-10">
+              <b>{user?.team.name}</b> - <span>{user?.position?.name}</span>
+              <b className="ml-4">{user?.name}</b>
+            </div>
             <Dropdown className="mr-10" hover end>
-              <Avatar
-                src="http://localhost:8081/user/avatar/1"
-                size="sm"
-                shape="circle"
-                online
-              />
+              <Avatar src={user?.avatar} size="sm" shape="circle" online />
               <Dropdown.Menu className="w-48 bg-base-100 shadow-xl">
                 <Dropdown.Item>
                   <GrNotification />
