@@ -4,6 +4,9 @@ import { useState } from 'react';
 // daisyui
 import { Breadcrumbs, Form, Radio, Select } from 'react-daisyui';
 
+// datepicker
+import Datepicker from 'react-tailwindcss-datepicker';
+
 type VacationSelect = {
   id: string;
   name: string;
@@ -45,9 +48,12 @@ export default function VacationRequest() {
   const [selectVacationType, setSelectVacationType] = useState<VacationSelect>(
     vacationTypes[0],
   );
-
   const [selectVacationSubType, setSelectVacationSubType] =
     useState<VacationSelect>(vacationSubTypes[0]);
+  const [dateValue, setDateValue] = useState<VacationDate>({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
 
   return (
     <main className="w-full h-full">
@@ -105,6 +111,27 @@ export default function VacationRequest() {
                   <Select.Option value="AM">오전</Select.Option>
                   <Select.Option value="PM">오후</Select.Option>
                 </Select>
+              </div>
+              <div className="col-span-1"></div>
+              <div className="col-span-1 text-center pt-2">
+                <span className="">휴가일</span>
+              </div>
+              <div className="col-span-2">
+                <Datepicker
+                  placeholder="날짜 선택"
+                  minDate={new Date(new Date().getFullYear(), 1, 1)}
+                  maxDate={new Date(new Date().getFullYear(), 11, 31)}
+                  value={dateValue}
+                  showFooter
+                  onChange={(value) => setDateValue(value as VacationDate)}
+                  i18n="ko"
+                  configs={{
+                    footer: {
+                      cancel: '취소',
+                      apply: '적용',
+                    },
+                  }}
+                />
               </div>
             </div>
           </Form>
