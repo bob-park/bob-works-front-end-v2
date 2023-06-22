@@ -34,7 +34,7 @@ type UserState = {
   user?: User;
   isLoading: boolean;
   isLoggedIn: boolean;
-  alternativeVacations?: AlternativeVacation[] = [];
+  alternativeVacations: AlternativeVacation[];
 };
 
 type AlternativeVacation = {

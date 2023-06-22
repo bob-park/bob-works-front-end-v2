@@ -5,6 +5,7 @@ import reducers from './reducers';
 const initialState: UserState = {
   isLoading: false,
   isLoggedIn: false,
+  alternativeVacations: [],
 };
 
 export default createSlice({

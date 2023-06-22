@@ -1,5 +1,8 @@
 // react
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useLayoutEffect } from 'react';
+
+// next
+import { useRouter } from 'next/router';
 
 // daisyui
 import {
@@ -20,6 +23,12 @@ import { BsFileArrowUp } from 'react-icons/bs';
 // datepicker
 import Datepicker from 'react-tailwindcss-datepicker';
 import DocumentTable from '@/component/DocumentTable';
+
+// hooks
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
+
+// store
+import { userActions } from '@/store/user';
 
 type VacationSelect = {
   id: string;
@@ -57,8 +66,7 @@ const vacationSubTypes: VacationSelect[] = [
   },
 ];
 
-// dummy
-const dummyAlternativeHeaderList = [
+const alternativeHeaderList = [
   {
     id: 'effectiveDate',
     value: '발생일',
@@ -77,24 +85,12 @@ const dummyAlternativeHeaderList = [
   },
 ];
 
-const dummyAlternativeDataList = [
-  {
-    id: 5,
-    effectiveDate: '2023-06-10',
-    effectiveCount: 2.0,
-    effectiveReason: 'test',
-    usedCount: 0.5,
-  },
-  {
-    id: 6,
-    effectiveDate: '2023-06-11',
-    effectiveCount: 1.0,
-    effectiveReason: 'test',
-    usedCount: 0,
-  },
-];
+const { requestGetUsableAlternativeVacation } = userActions;
 
 export default function VacationRequest() {
+  //router
+  const router = useRouter();
+
   //state
   const [selectVacationType, setSelectVacationType] = useState<VacationSelect>(
     vacationTypes[0],
@@ -111,6 +107,21 @@ export default function VacationRequest() {
   const [selectAlternativeList, setSelectAlternativeList] = useState<number[]>(
     [],
   );
+
+  // hooks
+  const dispatch = useAppDispatch();
+  const { alternativeVacations } = useAppSelector((state) => state.user);
+
+  // useEffect
+  useLayoutEffect(() => {
+    dispatch(
+      requestGetUsableAlternativeVacation({
+        handleAuthException: () => {
+          router.push('/api/logout');
+        },
+      }),
+    );
+  }, []);
 
   // handle
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -132,7 +143,7 @@ export default function VacationRequest() {
 
   const handleAlternativeCheckedAll = (checked: boolean) => {
     setSelectAlternativeList(
-      checked ? dummyAlternativeDataList.map((item) => item.id) : [],
+      checked ? alternativeVacations.map((item) => item.id) : [],
     );
   };
 
@@ -236,11 +247,11 @@ export default function VacationRequest() {
                     <div className="col-span-3">
                       {selectAlternativeList
                         .sort((o1, o2) => {
-                          const findO1 = dummyAlternativeDataList.find(
+                          const findO1 = alternativeVacations.find(
                             (i) => i.id == o1,
                           );
 
-                          const findO2 = dummyAlternativeDataList.find(
+                          const findO2 = alternativeVacations.find(
                             (i) => i.id == o2,
                           );
 
@@ -253,7 +264,7 @@ export default function VacationRequest() {
                             : -1;
                         })
                         .map((item) => {
-                          const findItem = dummyAlternativeDataList.find(
+                          const findItem = alternativeVacations.find(
                             (i) => i.id == item,
                           );
 
@@ -317,8 +328,8 @@ export default function VacationRequest() {
         <Modal.Body>
           <DocumentTable
             firstCheckbox
-            headers={dummyAlternativeHeaderList}
-            dataList={dummyAlternativeDataList}
+            headers={alternativeHeaderList}
+            dataList={alternativeVacations}
             checkedList={selectAlternativeList}
             onChecked={handleAlternativeChecked}
             onCheckedAll={handleAlternativeCheckedAll}
