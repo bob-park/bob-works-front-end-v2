@@ -257,6 +257,10 @@ export default function VacationRequest() {
                             (i) => i.id == item,
                           );
 
+                          if (!findItem) {
+                            return;
+                          }
+
                           return (
                             <Badge
                               key={`selected_alternative_${item}`}
@@ -264,8 +268,8 @@ export default function VacationRequest() {
                               size="lg"
                               color="accent"
                             >
-                              {`${findItem?.effectiveDate} (${
-                                findItem?.effectiveCount - findItem?.usedCount
+                              {`${findItem.effectiveDate} (${
+                                findItem.effectiveCount - findItem.usedCount
                               })`}
                             </Badge>
                           );
