@@ -2283,6 +2283,11 @@ react-redux@^8.1.1:
     react-is "^18.0.0"
     use-sync-external-store "^1.0.0"
 
+react-tailwindcss-datepicker@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/react-tailwindcss-datepicker/-/react-tailwindcss-datepicker-1.6.3.tgz#99411fc0bdd5a3dd028f6e4d65270f479eca7723"
+  integrity sha512-W7oq+kb+nBTvOwa3EOBXlcuTEyRT5G3AKfRESvTapWgdOlE26mqDGH8j6aLghA1Ez6+JsuSGSQYgC1L2XJ5hhg==
+
 react@18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
