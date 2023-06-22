@@ -1,8 +1,20 @@
 // react
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 // daisyui
-import { Breadcrumbs, Form, Radio, Select } from 'react-daisyui';
+import {
+  Breadcrumbs,
+  Form,
+  Radio,
+  Select,
+  Input,
+  Button,
+  Modal,
+} from 'react-daisyui';
+
+// react icons
+import { ImCancelCircle } from 'react-icons/im';
+import { BsFileArrowUp } from 'react-icons/bs';
 
 // datepicker
 import Datepicker from 'react-tailwindcss-datepicker';
@@ -54,6 +66,14 @@ export default function VacationRequest() {
     startDate: new Date(),
     endDate: new Date(),
   });
+  const [reason, setReason] = useState<string>('개인 사유');
+  const [openSelectAlternative, setOpenSelectAlternative] =
+    useState<boolean>(false);
+
+  // handle
+  const hadleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
 
   return (
     <main className="w-full h-full">
@@ -70,7 +90,7 @@ export default function VacationRequest() {
         </div>
 
         <div className="">
-          <Form>
+          <Form onSubmit={hadleSubmit}>
             <div className="grid grid-cols-5 gap-10">
               <div className="col-span-1 text-center pt-2">
                 <span className="">휴가 종류</span>
@@ -79,6 +99,7 @@ export default function VacationRequest() {
                 {vacationTypes.map((vacationType) => (
                   <Form.Label key={vacationType.id} title={vacationType.name}>
                     <Radio
+                      color="primary"
                       name="vacationType"
                       value={vacationType.id}
                       defaultChecked={selectVacationType.id === vacationType.id}
@@ -98,6 +119,7 @@ export default function VacationRequest() {
               </div>
               <div className="col-span-1">
                 <Select
+                  color="primary"
                   defaultValue={selectVacationSubType.id}
                   onChange={(e) =>
                     setSelectVacationSubType(
@@ -133,10 +155,68 @@ export default function VacationRequest() {
                   }}
                 />
               </div>
+              <div className="col-span-2"></div>
+              <div className="col-span-5">
+                {selectVacationType.id === 'ALTERNATIVE' && (
+                  <div className="grid grid-cols-5 gap-10">
+                    <div className="col-span-1 text-center pt-2">
+                      <span className="">대체 휴가 선택</span>
+                    </div>
+                    <div className="col-span-1">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        color="primary"
+                        onClick={() => setOpenSelectAlternative(true)}
+                      >
+                        선택
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="col-span-1 text-center pt-2">
+                <span className="">사유</span>
+              </div>
+              <div className="col-span-3">
+                <Input
+                  className="w-full"
+                  required
+                  bordered
+                  color="primary"
+                  placeholder="사유"
+                  defaultValue={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                />
+              </div>
+
+              <div className="col-span-5">
+                <div className="flex justify-end gap-5">
+                  <Button className="w-52" type="button">
+                    <ImCancelCircle className="w-5 h-5" />
+                    취소
+                  </Button>
+                  <Button className="w-52" type="submit" color="primary">
+                    <BsFileArrowUp className="w-5 h-5" />
+                    신청
+                  </Button>
+                </div>
+              </div>
             </div>
           </Form>
         </div>
       </div>
+      <Modal
+        open={openSelectAlternative}
+        onClickBackdrop={() => setOpenSelectAlternative(false)}
+      >
+        <Modal.Header className="font-bold">대체 휴가 선택</Modal.Header>
+        <Modal.Body></Modal.Body>
+        <Modal.Actions>
+          <Button onClick={() => setOpenSelectAlternative(false)}>취소</Button>
+          <Button color="primary">완료</Button>
+        </Modal.Actions>
+      </Modal>
     </main>
   );
 }
