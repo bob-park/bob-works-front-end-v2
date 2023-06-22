@@ -10,6 +10,7 @@ import {
   Input,
   Button,
   Modal,
+  Badge,
 } from 'react-daisyui';
 
 // react icons
@@ -18,6 +19,7 @@ import { BsFileArrowUp } from 'react-icons/bs';
 
 // datepicker
 import Datepicker from 'react-tailwindcss-datepicker';
+import DocumentTable from '@/component/DocumentTable';
 
 type VacationSelect = {
   id: string;
@@ -55,6 +57,43 @@ const vacationSubTypes: VacationSelect[] = [
   },
 ];
 
+// dummy
+const dummyAlternativeHeaderList = [
+  {
+    id: 'effectiveDate',
+    value: '발생일',
+  },
+  {
+    id: 'effectiveReason',
+    value: '사유',
+  },
+  {
+    id: 'effectiveCount',
+    value: '개수',
+  },
+  {
+    id: 'usedCount',
+    value: '사용',
+  },
+];
+
+const dummyAlternativeDataList = [
+  {
+    id: 5,
+    effectiveDate: '2023-06-10',
+    effectiveCount: 2.0,
+    effectiveReason: 'test',
+    usedCount: 1.0,
+  },
+  {
+    id: 6,
+    effectiveDate: '2023-06-11',
+    effectiveCount: 1.0,
+    effectiveReason: 'test',
+    usedCount: 0,
+  },
+];
+
 export default function VacationRequest() {
   //state
   const [selectVacationType, setSelectVacationType] = useState<VacationSelect>(
@@ -69,10 +108,32 @@ export default function VacationRequest() {
   const [reason, setReason] = useState<string>('개인 사유');
   const [openSelectAlternative, setOpenSelectAlternative] =
     useState<boolean>(false);
+  const [selectAlternativeList, setSelectAlternativeList] = useState<number[]>(
+    [],
+  );
 
   // handle
-  const hadleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+  };
+
+  const handleAlternativeChecked = (id: number, checked: boolean) => {
+    const list = selectAlternativeList.slice();
+
+    if (checked) {
+      list.push(id);
+    } else {
+      const index = list.findIndex((item) => item === id);
+      list.splice(index, 1);
+    }
+
+    setSelectAlternativeList(list);
+  };
+
+  const handleAlternativeCheckedAll = (checked: boolean) => {
+    setSelectAlternativeList(
+      checked ? dummyAlternativeDataList.map((item) => item.id) : [],
+    );
   };
 
   return (
@@ -90,7 +151,7 @@ export default function VacationRequest() {
         </div>
 
         <div className="">
-          <Form onSubmit={hadleSubmit}>
+          <Form onSubmit={handleSubmit}>
             <div className="grid grid-cols-5 gap-10">
               <div className="col-span-1 text-center pt-2">
                 <span className="">휴가 종류</span>
@@ -172,6 +233,42 @@ export default function VacationRequest() {
                         선택
                       </Button>
                     </div>
+                    <div className="col-span-3">
+                      {selectAlternativeList
+                        .sort((o1, o2) => {
+                          const findO1 = dummyAlternativeDataList.find(
+                            (i) => i.id == o1,
+                          );
+
+                          const findO2 = dummyAlternativeDataList.find(
+                            (i) => i.id == o2,
+                          );
+
+                          if (!findO1 || !findO2) {
+                            return 0;
+                          }
+
+                          return findO1.effectiveDate > findO2.effectiveDate
+                            ? 1
+                            : -1;
+                        })
+                        .map((item) => {
+                          const findItem = dummyAlternativeDataList.find(
+                            (i) => i.id == item,
+                          );
+
+                          return (
+                            <Badge
+                              key={`selected_alternative_${item}`}
+                              className="m-1"
+                              size="lg"
+                              color="primary"
+                            >
+                              {findItem?.effectiveDate}
+                            </Badge>
+                          );
+                        })}
+                    </div>
                   </div>
                 )}
               </div>
@@ -211,10 +308,24 @@ export default function VacationRequest() {
         onClickBackdrop={() => setOpenSelectAlternative(false)}
       >
         <Modal.Header className="font-bold">대체 휴가 선택</Modal.Header>
-        <Modal.Body></Modal.Body>
+        <Modal.Body>
+          <DocumentTable
+            firstCheckbox
+            headers={dummyAlternativeHeaderList}
+            dataList={dummyAlternativeDataList}
+            checkedList={selectAlternativeList}
+            onChecked={handleAlternativeChecked}
+            onCheckedAll={handleAlternativeCheckedAll}
+          />
+        </Modal.Body>
         <Modal.Actions>
-          <Button onClick={() => setOpenSelectAlternative(false)}>취소</Button>
-          <Button color="primary">완료</Button>
+          {/* <Button onClick={() => setOpenSelectAlternative(false)}>취소</Button> */}
+          <Button
+            color="primary"
+            onClick={() => setOpenSelectAlternative(false)}
+          >
+            완료
+          </Button>
         </Modal.Actions>
       </Modal>
     </main>
