@@ -83,7 +83,7 @@ const dummyAlternativeDataList = [
     effectiveDate: '2023-06-10',
     effectiveCount: 2.0,
     effectiveReason: 'test',
-    usedCount: 1.0,
+    usedCount: 0.5,
   },
   {
     id: 6,
@@ -262,9 +262,11 @@ export default function VacationRequest() {
                               key={`selected_alternative_${item}`}
                               className="m-1"
                               size="lg"
-                              color="primary"
+                              color="accent"
                             >
-                              {findItem?.effectiveDate}
+                              {`${findItem?.effectiveDate} (${
+                                findItem?.effectiveCount - findItem?.usedCount
+                              })`}
                             </Badge>
                           );
                         })}
