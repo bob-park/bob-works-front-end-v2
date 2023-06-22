@@ -1,9 +1,12 @@
 import '@/styles/globals.css';
 
 import { useLayoutEffect, useState } from 'react';
+
+// next
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
@@ -53,13 +56,17 @@ function App({ Component, pageProps }: AppProps) {
 
   // use effect
   useLayoutEffect(() => {
+    if (user) {
+      return;
+    }
+
     dispatch(
       requestGetUser({
         exceptionHandle: () =>
           router.push('/api/oauth2/authorization/bob-works'),
       }),
     );
-  }, [!user && !isLoggedIn]);
+  }, []);
 
   const toggleVisible = () => {
     setVisible(!visible);
@@ -71,6 +78,10 @@ function App({ Component, pageProps }: AppProps) {
     }
 
     return 'active';
+  };
+
+  const handleLogout = () => {
+    router.push('/api/logout');
   };
 
   return (
@@ -91,10 +102,10 @@ function App({ Component, pageProps }: AppProps) {
 
             <Menu className="h-full bg-base-100 w-80 p-2" compact="md">
               <Menu.Item>
-                <a className={activeMenuItem('/')}>
+                <Link className={activeMenuItem('/')} href="/">
                   <LuLayoutDashboard />
                   대시보드
-                </a>
+                </Link>
               </Menu.Item>
               <Menu.Item></Menu.Item>
               <Menu.Title>
@@ -117,10 +128,13 @@ function App({ Component, pageProps }: AppProps) {
                 <h2>문서 신청</h2>
               </Menu.Title>
               <Menu.Item>
-                <a>
+                <Link
+                  className={activeMenuItem('/request/vacation')}
+                  href="/request/vacation"
+                >
                   <GrDocumentUpdate />
                   휴가계 신청
-                </a>
+                </Link>
               </Menu.Item>
               <Menu.Item>
                 <a>
@@ -179,7 +193,7 @@ function App({ Component, pageProps }: AppProps) {
                   설정
                 </Dropdown.Item>
                 <hr />
-                <Dropdown.Item>
+                <Dropdown.Item onClick={handleLogout}>
                   <LuLogOut />
                   로그아웃
                 </Dropdown.Item>
