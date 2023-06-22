@@ -1,5 +1,5 @@
 // react
-import { FormEvent, useState, useLayoutEffect } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 
 // next
 import { useRouter } from 'next/router';
@@ -113,7 +113,7 @@ export default function VacationRequest() {
   const { alternativeVacations } = useAppSelector((state) => state.user);
 
   // useEffect
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(
       requestGetUsableAlternativeVacation({
         handleAuthException: () => {

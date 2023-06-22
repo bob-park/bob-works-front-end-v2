@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // next
 import type { AppProps } from 'next/app';
@@ -55,7 +55,7 @@ function App({ Component, pageProps }: AppProps) {
   const dispatch = useAppDispatch();
 
   // use effect
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (user) {
       return;
     }
