@@ -22,6 +22,24 @@ const reducers = {
     state.isLoading = false;
     state.isLoggedIn = false;
   },
+
+  // get alternative vacation list
+  requestGetUsableAlternativeVacation: (
+    state: UserState,
+    action: PayloadAction<{ handleAuthException?: () => void }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successGetUsableAlternativeVacation: (
+    state: UserState,
+    action: PayloadAction<AlternativeVacation[]>,
+  ) => {
+    state.isLoading = false;
+    state.alternativeVacations = action.payload;
+  },
+  failureGetUsableAlternativeVacation: (state: UserState) => {
+    state.isLoading = false;
+  },
 };
 
 export default reducers;

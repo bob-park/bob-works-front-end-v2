@@ -34,4 +34,13 @@ type UserState = {
   user?: User;
   isLoading: boolean;
   isLoggedIn: boolean;
+  alternativeVacations?: AlternativeVacation[] = [];
+};
+
+type AlternativeVacation = {
+  id: number;
+  effectiveDate: Date;
+  effectiveReason: string;
+  effectiveCount: number;
+  usedCount: number;
 };
