@@ -201,7 +201,7 @@ function App({ Component, pageProps }: AppProps) {
             </Dropdown>
           </Navbar.End>
         </Navbar>
-        <div className="flex items-center justify-center m-10">
+        <div className="flex items-center justify-center m-10 min-w-[746px]">
           <Component {...pageProps} />
         </div>
 
