@@ -2,6 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { ExceptionHandle } from '@/store/types';
 import {
   AddVacationRequest,
+  Documents,
   DocumentsState,
   DocumentsStatus,
   DocumentsType,
@@ -28,13 +29,16 @@ const reducers = {
   // add vacation document
   requestAddVacationDocument: (
     state: DocumentsState,
-    action: PayloadAction<AddVacationRequest>,
+    action: PayloadAction<{
+      body: AddVacationRequest;
+      handleException: ExceptionHandle;
+    }>,
   ) => {
     state.isLoading = true;
   },
   successAddVacationDocumnet: (
     state: DocumentsState,
-    action: PayloadAction<DocumentsStatus>,
+    action: PayloadAction<Documents | undefined>,
   ) => {
     state.isLoading = false;
   },

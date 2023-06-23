@@ -4,7 +4,7 @@ import { getCall, postCall } from '@/utils/common';
 
 import { userActions } from '@/store/user';
 import { documentActions } from '.';
-import { DocumentsType } from './types';
+import { Documents, DocumentsType } from './types';
 
 const { removeAuthentication } = userActions;
 const {
@@ -12,6 +12,10 @@ const {
   requestGetDocumentType,
   successGetdocumentType,
   failureGetDocumentType,
+  // add vacation document
+  requestAddVacationDocument,
+  successAddVacationDocumnet,
+  failureAddVacationDocument,
 } = documentActions;
 
 // get document type
@@ -42,6 +46,37 @@ function* watchRequestGetDocumentType() {
   yield takeLatest(requestGetDocumentType, callGetDocumentType);
 }
 
+function* callAddVacationDocument(
+  action: ReturnType<typeof requestAddVacationDocument>,
+) {
+  const { body, handleException } = action.payload;
+  const { handleAuthError } = handleException;
+
+  const response: ApiResponse<Documents> = yield postCall(
+    '/api/document/vacation',
+    body,
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successAddVacationDocumnet(response.data));
+  } else {
+    yield put(failureGetDocumentType());
+
+    if (response.status === 401) {
+      yield put(removeAuthentication());
+
+      handleAuthError && handleAuthError();
+    }
+  }
+}
+
+function* watchAddVacationDocument() {
+  yield takeLatest(requestAddVacationDocument, callAddVacationDocument);
+}
+
 export default function* documentSagas() {
-  yield all([fork(watchRequestGetDocumentType)]);
+  yield all([
+    fork(watchRequestGetDocumentType),
+    fork(watchAddVacationDocument),
+  ]);
 }

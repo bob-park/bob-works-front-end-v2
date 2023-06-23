@@ -93,14 +93,14 @@ function App({ Component, pageProps }: AppProps) {
       <Drawer
         className="lg:drawer-open h-screen"
         side={
-          <aside className="w-80 h-full">
+          <aside className="w-80 h-full bg-base-100">
             <div className="bg-opacity-90 px-4 py-2 backdrop-blur flex justify-center bg-base-100 shadow-sm h-[78px]">
               <a className="btn btn-ghost normal-case px-2 mx-2 text-2xl font-bold">
                 Bob Works
               </a>
             </div>
 
-            <Menu className="h-full bg-base-100 w-80 p-2" compact="md">
+            <Menu className="w-80 p-2" compact="md">
               <Menu.Item>
                 <Link className={activeMenuItem('/')} href="/">
                   <LuLayoutDashboard />
