@@ -60,7 +60,7 @@ const reducers = {
     action: PayloadAction<Pagable<Documents>>,
   ) => {
     state.isLoading = false;
-    state.pagable = action.payload;
+    state.pageable = action.payload;
   },
   failureSearchDocument: (state: DocumentsState) => {
     state.isLoading = false;

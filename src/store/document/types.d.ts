@@ -5,7 +5,7 @@ export type DocumentType = 'VACATION' | 'HOLIDAY_WORK';
 export type DocumentsState = {
   isLoading: boolean;
   types: DocumentsType[];
-  pagable: Pagable<Documents>;
+  pageable: Pagable<Documents>;
 };
 
 export type DocumentsType = {

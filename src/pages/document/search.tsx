@@ -9,7 +9,14 @@ import { BiSearch } from 'react-icons/bi';
 import { GrPowerCycle } from 'react-icons/gr';
 
 // daisyui
-import { Breadcrumbs, Form, Card, Select, Button } from 'react-daisyui';
+import {
+  Breadcrumbs,
+  Form,
+  Card,
+  Select,
+  Button,
+  Pagination,
+} from 'react-daisyui';
 
 import { format } from 'date-fns';
 
@@ -26,6 +33,8 @@ import DocumentTable from '@/component/DocumentTable';
 // utils
 import { parseDocumentType, parseDocumentStatus } from '@/utils/ParseUtils';
 import { DocumentsStatus } from '@/store/document/types';
+import DocumentPagination from '@/component/DocumentPagination';
+import { getTotalPageCount } from '@/utils/paginationUtils';
 
 type SelectValue = {
   id: string;
@@ -94,17 +103,17 @@ export default function DocumentList() {
 
   // store
   const dispatch = useAppDispatch();
-  const { types, isLoading, pagable } = useAppSelector(
+  const { types, isLoading, pageable } = useAppSelector(
     (state) => state.document,
   );
 
   // state
   const [page, setPage] = useState<PaginationParams>({
-    size: 25,
+    size: 10,
     page: 0,
   });
 
-  const dataList = pagable.content.map((item) => {
+  const dataList = pageable.content.map((item) => {
     return {
       id: item.id,
       type: item.documentType.type,
@@ -122,8 +131,13 @@ export default function DocumentList() {
       }),
     );
 
-    handleSearch(page);
+    // handleSearch(page);
   }, []);
+
+  // useEffect
+  useEffect(() => {
+    handleSearch(page);
+  }, [page]);
 
   // handle
   const handleLogout = () => {
@@ -219,13 +233,22 @@ export default function DocumentList() {
 
         <div>
           <div>
-            총 <span className="font-bold">{pagable.total}</span> 개
+            총 <span className="font-bold">{pageable.total}</span> 개
           </div>
         </div>
 
         <Card className="bg-base-100 h-[500px] overflow-auto">
           <DocumentTable firstCheckbox headers={headers} dataList={dataList} />
         </Card>
+
+        <div className="flex justify-center">
+          <DocumentPagination
+            total={getTotalPageCount(pageable.total, pageable.pageable.size)}
+            current={pageable.pageable.page + 1}
+            onPrev={() => setPage({ ...page, page: page.page - 1 })}
+            onNext={() => setPage({ ...page, page: page.page + 1 })}
+          />
+        </div>
       </div>
     </main>
   );
