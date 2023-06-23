@@ -130,7 +130,7 @@ export default function VacationRequest() {
   // hooks
   const dispatch = useAppDispatch();
   const { alternativeVacations } = useAppSelector((state) => state.user);
-  const { types } = useAppSelector((state) => state.document);
+  const { types, isLoading } = useAppSelector((state) => state.document);
 
   // useEffect
   useEffect(() => {
@@ -370,8 +370,17 @@ export default function VacationRequest() {
                     <ImCancelCircle className="w-5 h-5" />
                     취소
                   </Button>
-                  <Button className="w-52" type="submit" color="primary">
-                    <BsFileArrowUp className="w-5 h-5" />
+                  <Button
+                    className="w-52"
+                    type="submit"
+                    color="primary"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <span className="loading loading-spinner loading-md" />
+                    ) : (
+                      <BsFileArrowUp className="w-5 h-5" />
+                    )}
                     신청
                   </Button>
                 </div>
