@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // daisyui
-import { Button } from 'react-daisyui';
+import { Pagination, Button } from 'react-daisyui';
 
 type DocumentPaginationProps = {
   total: number;
@@ -29,7 +29,7 @@ export default function DocumentPagination({
   };
 
   return (
-    <div className="join">
+    <Pagination>
       <Button disabled={current === 1} onClick={handlePrev}>
         «
       </Button>
@@ -37,6 +37,6 @@ export default function DocumentPagination({
       <Button disabled={current === total} onClick={handleNext}>
         »
       </Button>
-    </div>
+    </Pagination>
   );
 }
