@@ -31,12 +31,10 @@ import {
   Navbar,
   Dropdown,
   Button,
-  Indicator,
   Badge,
   Menu,
   Avatar,
   Drawer,
-  Divider,
   Tooltip,
 } from 'react-daisyui';
 
@@ -112,10 +110,13 @@ function App({ Component, pageProps }: AppProps) {
                 <h2>문서 결재</h2>
               </Menu.Title>
               <Menu.Item>
-                <a>
+                <Link
+                  className={activeMenuItem('/document/search')}
+                  href="/document/search"
+                >
                   <AiOutlineUnorderedList />
                   결재 신청 목록
-                </a>
+                </Link>
               </Menu.Item>
               <Menu.Item>
                 <a>
