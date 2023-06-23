@@ -60,7 +60,7 @@ function* callAddVacationDocument(
   if (response.state === 'SUCCESS') {
     yield put(successAddVacationDocumnet(response.data));
   } else {
-    yield put(failureGetDocumentType());
+    yield put(failureAddVacationDocument());
 
     if (response.status === 401) {
       yield put(removeAuthentication());

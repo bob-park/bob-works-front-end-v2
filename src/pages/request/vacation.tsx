@@ -207,6 +207,14 @@ export default function VacationRequest() {
     );
   };
 
+  const handleCancel = () => {
+    setSelectVacationType(vacationTypes[0]);
+    setSelectVacationSubType(vacationSubTypes[0]);
+    setDateValue({ startDate: new Date(), endDate: new Date() });
+    setReason('개인 사유');
+    setSelectAlternativeList([]);
+  };
+
   return (
     <main className="w-full h-full">
       <div className="grid grid-cols-1 gap-8">
@@ -234,7 +242,7 @@ export default function VacationRequest() {
                       color="primary"
                       name="vacationType"
                       value={vacationType.id}
-                      defaultChecked={selectVacationType.id === vacationType.id}
+                      checked={selectVacationType.id === vacationType.id}
                       onChange={(e) =>
                         setSelectVacationType(
                           vacationTypes.find(
@@ -252,7 +260,7 @@ export default function VacationRequest() {
               <div className="col-span-1">
                 <Select
                   color="primary"
-                  defaultValue={selectVacationSubType.id}
+                  value={selectVacationSubType.id}
                   onChange={(e) =>
                     setSelectVacationSubType(
                       vacationSubTypes.find(
@@ -359,14 +367,14 @@ export default function VacationRequest() {
                   bordered
                   color="primary"
                   placeholder="사유"
-                  defaultValue={reason}
+                  value={reason}
                   onChange={(e) => setReason(e.target.value)}
                 />
               </div>
 
               <div className="col-span-5">
                 <div className="flex justify-end gap-5">
-                  <Button className="w-52" type="button">
+                  <Button className="w-52" type="button" onClick={handleCancel}>
                     <ImCancelCircle className="w-5 h-5" />
                     취소
                   </Button>
