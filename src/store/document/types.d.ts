@@ -1,18 +1,18 @@
-type DocumentType = 'VACATION' | 'HOLIDAY_WORK';
+export type DocumentType = 'VACATION' | 'HOLIDAY_WORK';
 
-type DocumentsState = {
+export type DocumentsState = {
   isLoading: boolean;
-  types: DocumentTypes[];
+  types: DocumentsType[];
 };
 
-type DocumentTypes = {
+export type DocumentsType = {
   id: number;
   type: DocumentType;
   name: string;
   approvalLine?: DocumentApprovalLine;
 };
 
-type DocumentApprovalLine = {
+export type DocumentApprovalLine = {
   id: number;
   userId: number;
   teamId: number;
