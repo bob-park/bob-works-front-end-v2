@@ -1,5 +1,5 @@
 // react
-import { FormEvent, useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 // next
 import { useRouter } from 'next/router';
@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 
 // store
 import { documentActions } from '@/store/document';
+import { PaginationParams } from '@/store/types';
 
 type SelectValue = {
   id: string;
@@ -23,7 +24,7 @@ type SelectValue = {
 };
 
 // actions
-const { requestGetDocumentType } = documentActions;
+const { requestGetDocumentType, requestSearchDocument } = documentActions;
 
 const documentStatus: SelectValue[] = [
   {
@@ -60,6 +61,12 @@ export default function DocumentList() {
   const dispatch = useAppDispatch();
   const { types, isLoading } = useAppSelector((state) => state.document);
 
+  // state
+  const [page, setPage] = useState<PaginationParams>({
+    size: 25,
+    page: 0,
+  });
+
   // useEffect
   useEffect(() => {
     dispatch(
@@ -67,6 +74,8 @@ export default function DocumentList() {
         handleAuthError: handleLogout,
       }),
     );
+
+    handleSearch(page);
   }, []);
 
   // handle
@@ -76,6 +85,17 @@ export default function DocumentList() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+  };
+
+  const handleSearch = (params: PaginationParams) => {
+    dispatch(
+      requestSearchDocument({
+        params,
+        exceptionHandle: {
+          handleAuthError: handleLogout,
+        },
+      }),
+    );
   };
 
   return (

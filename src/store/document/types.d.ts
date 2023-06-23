@@ -1,9 +1,11 @@
+import { Pagable } from '@/store/types';
+
 export type DocumentType = 'VACATION' | 'HOLIDAY_WORK';
 
 export type DocumentsState = {
   isLoading: boolean;
   types: DocumentsType[];
-  documents: Documents[];
+  pagable: Pagable<Documents>;
 };
 
 export type DocumentsType = {

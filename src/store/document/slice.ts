@@ -6,7 +6,9 @@ import { DocumentsState } from './types';
 const initialState: DocumentsState = {
   isLoading: false,
   types: [],
-  documents: [],
+  pagable: {
+    total: 0,
+  },
 };
 
 export default createSlice({
