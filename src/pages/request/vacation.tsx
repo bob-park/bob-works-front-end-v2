@@ -30,7 +30,13 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 // store
 import { userActions } from '@/store/user';
 import { documentActions } from '@/store/document';
-import { DocumentType, DocumentsType } from '@/store/document/types';
+import {
+  AddVacationRequest,
+  DocumentType,
+  DocumentsType,
+  VacationSubType,
+  VacationType,
+} from '@/store/document/types';
 
 type VacationSelect = {
   id: string;
@@ -43,7 +49,7 @@ type VacationDate = {
 };
 
 const { requestGetUsableAlternativeVacation } = userActions;
-const { requestGetDocumentType } = documentActions;
+const { requestGetDocumentType, requestAddVacationDocument } = documentActions;
 
 const vacationTypes: VacationSelect[] = [
   {
@@ -91,7 +97,7 @@ const alternativeHeaderList = [
 ];
 
 function getTypeId(types: DocumentsType[], typeName: DocumentType): number {
-  const type = types.find((type) => type.name === typeName);
+  const type = types.find((type) => type.type === typeName);
 
   if (!type) {
     throw new Error('No exist type.');
@@ -103,6 +109,7 @@ function getTypeId(types: DocumentsType[], typeName: DocumentType): number {
 export default function VacationRequest() {
   //router
   const router = useRouter();
+
   //state
   const [selectVacationType, setSelectVacationType] = useState<VacationSelect>(
     vacationTypes[0],
@@ -123,6 +130,7 @@ export default function VacationRequest() {
   // hooks
   const dispatch = useAppDispatch();
   const { alternativeVacations } = useAppSelector((state) => state.user);
+  const { types } = useAppSelector((state) => state.document);
 
   // useEffect
   useEffect(() => {
@@ -146,6 +154,38 @@ export default function VacationRequest() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      selectVacationType.id === 'ALTERNATIVE' &&
+      selectAlternativeList.length === 0
+    ) {
+      return;
+    }
+
+    const addVacationRequest: AddVacationRequest = {
+      typeId: getTypeId(types, 'VACATION'),
+      vacationType: selectVacationType.id as VacationType,
+      vacationSubType:
+        selectVacationSubType.id !== 'ALL'
+          ? (selectVacationSubType.id as VacationSubType)
+          : undefined,
+      vacationDateFrom: dateValue.startDate,
+      vacationDateTo: dateValue.endDate,
+      reason,
+      useAlternativeVacationIds:
+        selectVacationType.id === 'ALTERNATIVE'
+          ? selectAlternativeList
+          : undefined,
+    };
+
+    dispatch(
+      requestAddVacationDocument({
+        body: addVacationRequest,
+        handleException: {
+          handleAuthError: handleLogout,
+        },
+      }),
+    );
   };
 
   const handleAlternativeChecked = (id: number, checked: boolean) => {
