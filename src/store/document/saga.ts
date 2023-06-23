@@ -16,6 +16,10 @@ const {
   requestAddVacationDocument,
   successAddVacationDocumnet,
   failureAddVacationDocument,
+  // search document
+  requestSearchDocument,
+  successSearchDocument,
+  failureSearchDocument,
 } = documentActions;
 
 // get document type
@@ -46,6 +50,7 @@ function* watchRequestGetDocumentType() {
   yield takeLatest(requestGetDocumentType, callGetDocumentType);
 }
 
+// add vacation document
 function* callAddVacationDocument(
   action: ReturnType<typeof requestAddVacationDocument>,
 ) {
@@ -74,9 +79,37 @@ function* watchAddVacationDocument() {
   yield takeLatest(requestAddVacationDocument, callAddVacationDocument);
 }
 
+// search document
+function* callSearchDocument(action: ReturnType<typeof requestSearchDocument>) {
+  const { params, exceptionHandle } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<Documents[]> = yield getCall(
+    '/api/document/search',
+    params,
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successSearchDocument(response.data || []));
+  } else {
+    yield put(failureSearchDocument());
+
+    if (response.status === 401) {
+      yield put(removeAuthentication());
+
+      handleAuthError && handleAuthError();
+    }
+  }
+}
+
+function* watchRequestSearchDocument() {
+  yield takeLatest(requestSearchDocument, callSearchDocument);
+}
+
 export default function* documentSagas() {
   yield all([
     fork(watchRequestGetDocumentType),
     fork(watchAddVacationDocument),
+    fork(watchRequestSearchDocument),
   ]);
 }

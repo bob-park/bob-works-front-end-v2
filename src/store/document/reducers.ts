@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { ExceptionHandle } from '@/store/types';
+import { ExceptionHandle, PaginationParams } from '@/store/types';
 import {
   AddVacationRequest,
   Documents,
@@ -43,6 +43,26 @@ const reducers = {
     state.isLoading = false;
   },
   failureAddVacationDocument: (state: DocumentsState) => {
+    state.isLoading = false;
+  },
+  // search document
+  requestSearchDocument: (
+    state: DocumentsState,
+    action: PayloadAction<{
+      params: PaginationParams;
+      exceptionHandle: ExceptionHandle;
+    }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successSearchDocument: (
+    state: DocumentsState,
+    action: PayloadAction<Documents[]>,
+  ) => {
+    state.isLoading = false;
+    state.documents = action.payload;
+  },
+  failureSearchDocument: (state: DocumentsState) => {
     state.isLoading = false;
   },
 };

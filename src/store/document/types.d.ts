@@ -3,6 +3,7 @@ export type DocumentType = 'VACATION' | 'HOLIDAY_WORK';
 export type DocumentsState = {
   isLoading: boolean;
   types: DocumentsType[];
+  documents: Documents[];
 };
 
 export type DocumentsType = {
