@@ -29,6 +29,8 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 
 // store
 import { userActions } from '@/store/user';
+import { documentActions } from '@/store/document';
+import { DocumentType, DocumentsType } from '@/store/document/types';
 
 type VacationSelect = {
   id: string;
@@ -39,6 +41,9 @@ type VacationDate = {
   startDate: Date;
   endDate: Date;
 };
+
+const { requestGetUsableAlternativeVacation } = userActions;
+const { requestGetDocumentType } = documentActions;
 
 const vacationTypes: VacationSelect[] = [
   {
@@ -85,12 +90,19 @@ const alternativeHeaderList = [
   },
 ];
 
-const { requestGetUsableAlternativeVacation } = userActions;
+function getTypeId(types: DocumentsType[], typeName: DocumentType): number {
+  const type = types.find((type) => type.name === typeName);
+
+  if (!type) {
+    throw new Error('No exist type.');
+  }
+
+  return type.id;
+}
 
 export default function VacationRequest() {
   //router
   const router = useRouter();
-
   //state
   const [selectVacationType, setSelectVacationType] = useState<VacationSelect>(
     vacationTypes[0],
@@ -116,14 +128,22 @@ export default function VacationRequest() {
   useEffect(() => {
     dispatch(
       requestGetUsableAlternativeVacation({
-        handleAuthException: () => {
-          router.push('/api/logout');
-        },
+        handleAuthException: handleLogout,
+      }),
+    );
+
+    dispatch(
+      requestGetDocumentType({
+        handleAuthError: handleLogout,
       }),
     );
   }, []);
 
   // handle
+  const handleLogout = () => {
+    router.push('/api/logout');
+  };
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };

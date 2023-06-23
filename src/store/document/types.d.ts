@@ -18,3 +18,35 @@ export type DocumentApprovalLine = {
   teamId: number;
   next?: DocumentApprovalLine;
 };
+
+// documents
+export type DocumentsStatus =
+  | 'WAITING'
+  | 'PROCEEDING'
+  | 'APPROVE'
+  | 'REJECT'
+  | 'CANCEL';
+export type Documents = {
+  id: number;
+  documentType: DocumentsType;
+  writerId: number;
+  writer: string;
+  status: DocumentsStatus;
+  createdDate: Date;
+  createdBy: string;
+  lastModifiedDate?: Date;
+  lastModifiedBy?: string;
+};
+
+// add vacation request
+export type VacationType = 'GENERAL' | 'HOLIDAY_WORK';
+export type VacationSubType = 'AM' | 'PM';
+export type AddVacationRequest = {
+  typeId: number;
+  vacationType: VacationType;
+  vacationSubType?: VacationSubType | null;
+  vacationDateFrom: Date;
+  vacationDateTo: Date;
+  reason: string;
+  useAlternativeVacationIds?: number[];
+};

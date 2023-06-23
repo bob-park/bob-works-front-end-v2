@@ -1,3 +1,3 @@
 export type ExceptionHandle = {
-  handleAuthError: () => void;
+  handleAuthError?: () => void;
 };

@@ -39,7 +39,7 @@ function* callGetDocumentType(
 }
 
 function* watchRequestGetDocumentType() {
-  takeLatest(requestGetDocumentType, callGetDocumentType);
+  yield takeLatest(requestGetDocumentType, callGetDocumentType);
 }
 
 export default function* documentSagas() {
