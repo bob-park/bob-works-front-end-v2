@@ -4,6 +4,7 @@ import reducers from './reducers';
 
 const initialState: DocumentsState = {
   isLoading: false,
+  types: [],
 };
 
 export default createSlice({

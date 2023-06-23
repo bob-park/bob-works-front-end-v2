@@ -4,8 +4,10 @@ import { RootState } from '@/store/store';
 
 const selectorAllState = createSelector(
   (state: DocumentsState) => state.isLoading,
-  (isLoading) => ({
+  (state: DocumentsState) => state.types,
+  (isLoading, types) => ({
     isLoading,
+    types,
   }),
 );
 
