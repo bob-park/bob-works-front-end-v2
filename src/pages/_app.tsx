@@ -149,74 +149,76 @@ function App({ Component, pageProps }: AppProps) {
         open={visible}
         onClickOverlay={toggleVisible}
       >
-        <Navbar className="bg-base-100 shadow-sm">
-          <Navbar.Start className="flex-none lg:hidden">
-            <div className="flex-none lg:hidden">
-              <Button shape="square" color="ghost" onClick={toggleVisible}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="inline-block w-6 h-6 stroke-current"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </Button>
-            </div>
-            <div className="flex-1 px-2 mx-2 lg:hidden text-2xl font-bold">
-              Bob Works
-            </div>
-          </Navbar.Start>
-          <Navbar.End>
-            <div className="mr-10">
-              <b>{user?.team.name}</b> - <span>{user?.position?.name}</span>
-              <b className="ml-4">{user?.name}</b>
-            </div>
-            <Dropdown className="mr-10" hover end>
-              <Avatar src={user?.avatar} size="sm" shape="circle" online />
-              <Dropdown.Menu className="w-48 bg-base-100 shadow-xl">
-                <Dropdown.Item>
-                  <GrNotification />
-                  공지 <Badge color="primary">new</Badge>
-                </Dropdown.Item>
-                <hr />
-                <Dropdown.Item>
-                  <CgProfile />
-                  프로필
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <AiOutlineSetting />
-                  설정
-                </Dropdown.Item>
-                <hr />
-                <Dropdown.Item onClick={handleLogout}>
-                  <LuLogOut />
-                  로그아웃
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Navbar.End>
-        </Navbar>
-        <div className="flex items-center justify-center m-10 min-w-[746px] max-w-[1280px]">
-          <Component {...pageProps} />
-        </div>
+        <div className="h-full relative">
+          <Navbar className="bg-base-100 shadow-sm">
+            <Navbar.Start className="flex-none lg:hidden">
+              <div className="flex-none lg:hidden">
+                <Button shape="square" color="ghost" onClick={toggleVisible}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="inline-block w-6 h-6 stroke-current"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                </Button>
+              </div>
+              <div className="flex-1 px-2 mx-2 lg:hidden text-2xl font-bold">
+                Bob Works
+              </div>
+            </Navbar.Start>
+            <Navbar.End>
+              <div className="mr-10">
+                <b>{user?.team.name}</b> - <span>{user?.position?.name}</span>
+                <b className="ml-4">{user?.name}</b>
+              </div>
+              <Dropdown className="mr-10" hover end>
+                <Avatar src={user?.avatar} size="sm" shape="circle" online />
+                <Dropdown.Menu className="w-48 bg-base-100 shadow-xl">
+                  <Dropdown.Item>
+                    <GrNotification />
+                    공지 <Badge color="primary">new</Badge>
+                  </Dropdown.Item>
+                  <hr />
+                  <Dropdown.Item>
+                    <CgProfile />
+                    프로필
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <AiOutlineSetting />
+                    설정
+                  </Dropdown.Item>
+                  <hr />
+                  <Dropdown.Item onClick={handleLogout}>
+                    <LuLogOut />
+                    로그아웃
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Navbar.End>
+          </Navbar>
+          <div className="flex items-center justify-center m-10 min-w-[746px] max-w-[1280px] overflow-auto">
+            <Component {...pageProps} />
+          </div>
 
-        <div className="absolute bottom-10 right-10">
-          <Tooltip message="무엇을 도와드릴까요?">
-            <Avatar
-              className=""
-              size="sm"
-              shape="circle"
-              src="/customer_service_center.png"
-              border
-              color="ghost"
-            />
-          </Tooltip>
+          <div className="fixed bottom-10 right-10">
+            <Tooltip message="무엇을 도와드릴까요?">
+              <Avatar
+                className=""
+                size="sm"
+                shape="circle"
+                src="/customer_service_center.png"
+                border
+                color="ghost"
+              />
+            </Tooltip>
+          </div>
         </div>
       </Drawer>
     </>
