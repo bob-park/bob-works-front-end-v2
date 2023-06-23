@@ -11,7 +11,7 @@ const selectorAllState = createSelector(
   }),
 );
 
-export const authentiationSelector = {
+export const userSelector = {
   all: (state: RootState) => selectorAllState(state[USER]),
 };
 

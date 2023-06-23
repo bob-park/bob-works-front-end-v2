@@ -65,6 +65,6 @@ function* watchGetUsableAlternativeVacation() {
   );
 }
 
-export default function* authencationSagas() {
+export default function* userSagas() {
   yield all([fork(watchLoggedIn), fork(watchGetUsableAlternativeVacation)]);
 }

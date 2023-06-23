@@ -1,0 +1,3 @@
+type DocumentsState = {
+  isLoading: boolean;
+};
