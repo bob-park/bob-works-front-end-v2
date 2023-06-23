@@ -38,6 +38,7 @@ import {
   VacationSubType,
   VacationType,
 } from '@/store/document/types';
+import { getDocumentTypeId } from '@/utils/ParseUtils';
 
 type VacationSelect = {
   id: string;
@@ -97,16 +98,6 @@ const alternativeHeaderList = [
   },
 ];
 
-function getTypeId(types: DocumentsType[], typeName: DocumentType): number {
-  const type = types.find((type) => type.type === typeName);
-
-  if (!type) {
-    throw new Error('No exist type.');
-  }
-
-  return type.id;
-}
-
 export default function VacationRequest() {
   //router
   const router = useRouter();
@@ -164,7 +155,7 @@ export default function VacationRequest() {
     }
 
     const addVacationRequest: AddVacationRequest = {
-      typeId: getTypeId(types, 'VACATION'),
+      typeId: getDocumentTypeId(types, 'VACATION'),
       vacationType: selectVacationType.id as VacationType,
       vacationSubType:
         selectVacationSubType.id !== 'ALL'

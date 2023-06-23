@@ -32,8 +32,7 @@ export type DocumentsStatus =
 export type Documents = {
   id: number;
   documentType: DocumentsType;
-  writerId: number;
-  writer: string;
+  writer: User;
   status: DocumentsStatus;
   createdDate: Date;
   createdBy: string;

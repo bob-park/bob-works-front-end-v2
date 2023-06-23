@@ -11,12 +11,21 @@ import { GrPowerCycle } from 'react-icons/gr';
 // daisyui
 import { Breadcrumbs, Form, Card, Select, Button } from 'react-daisyui';
 
+import { format } from 'date-fns';
+
 // hooks
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 
 // store
 import { documentActions } from '@/store/document';
 import { PaginationParams } from '@/store/types';
+
+// component
+import DocumentTable from '@/component/DocumentTable';
+
+// utils
+import { parseDocumentType, parseDocumentStatus } from '@/utils/ParseUtils';
+import { DocumentsStatus } from '@/store/document/types';
 
 type SelectValue = {
   id: string;
@@ -53,18 +62,56 @@ const documentStatus: SelectValue[] = [
   },
 ];
 
+const headers = [
+  {
+    id: 'id',
+    value: '문서 번호',
+  },
+  {
+    id: 'type',
+    value: '문서 종류',
+    parse: (input: any) => parseDocumentType(input as string),
+  },
+  {
+    id: 'status',
+    value: '결재 상태',
+    parse: (input: any) => parseDocumentStatus(input as DocumentsStatus),
+  },
+  {
+    id: 'writer',
+    value: '작성자',
+  },
+  {
+    id: 'createdDate',
+    value: '신청일',
+    parse: (input: Date) => format(new Date(input), 'yyyy-MM-dd hh:mm:ss'),
+  },
+];
+
 export default function DocumentList() {
   // next
   const router = useRouter();
 
   // store
   const dispatch = useAppDispatch();
-  const { types, isLoading } = useAppSelector((state) => state.document);
+  const { types, isLoading, pagable } = useAppSelector(
+    (state) => state.document,
+  );
 
   // state
   const [page, setPage] = useState<PaginationParams>({
     size: 25,
     page: 0,
+  });
+
+  const dataList = pagable.content.map((item) => {
+    return {
+      id: item.id,
+      type: item.documentType.type,
+      status: item.status,
+      writer: item.writer.name,
+      createdDate: item.createdDate,
+    };
   });
 
   // useEffect
@@ -171,10 +218,14 @@ export default function DocumentList() {
         </Card>
 
         <div>
-          <div>{`총 ${0} 개`}</div>
+          <div>
+            총 <span className="font-bold">{pagable.total}</span> 개
+          </div>
         </div>
 
-        <Card className="bg-base-100"></Card>
+        <Card className="bg-base-100 h-[500px] overflow-auto">
+          <DocumentTable firstCheckbox headers={headers} dataList={dataList} />
+        </Card>
       </div>
     </main>
   );

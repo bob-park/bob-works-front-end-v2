@@ -8,7 +8,7 @@ export type PaginationParams = {
 };
 
 export type Pagable<T> = {
-  content?: T[];
+  content: T[];
   total: number;
   pagable?: Pagination;
 };

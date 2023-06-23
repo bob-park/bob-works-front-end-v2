@@ -8,6 +8,7 @@ const initialState: DocumentsState = {
   types: [],
   pagable: {
     total: 0,
+    content: [],
   },
 };
 

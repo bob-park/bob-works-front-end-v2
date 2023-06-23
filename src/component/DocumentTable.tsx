@@ -52,8 +52,8 @@ export default function DocumentTable({
   };
 
   return (
-    <Table className="rounded-box">
-      <Table.Head>
+    <Table className="rounded-box relative">
+      <Table.Head className="sticky top-0">
         {heads.map((head) =>
           head.checkbox ? (
             <Checkbox
@@ -69,9 +69,9 @@ export default function DocumentTable({
           ),
         )}
       </Table.Head>
-      <Table.Body>
+      <Table.Body className="">
         {dataList?.map((data) => (
-          <Table.Row key={`data_${data.id}`} onClick={handleRowClick}>
+          <Table.Row key={`data_${data.id}`} hover onClick={handleRowClick}>
             {heads.map((head) =>
               head.checkbox ? (
                 <Checkbox
@@ -80,7 +80,9 @@ export default function DocumentTable({
                   onChange={(e) => handleChecked(e, data.id)}
                 />
               ) : (
-                <span key={`${head.id}_${data.id}`}>{data[head.id]}</span>
+                <span key={`${head.id}_${data.id}`}>
+                  {head.parse ? head.parse(data[head.id]) : data[head.id]}
+                </span>
               ),
             )}
           </Table.Row>
