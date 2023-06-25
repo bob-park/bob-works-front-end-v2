@@ -123,7 +123,13 @@ export default function VacationDocument({
                   )}`
                 : formatDate(document.vacationDateFrom)}
             </span>
-            <span className="ml-4">( {`${document.daysCount} 일`} )</span>
+            <span className="ml-4">
+              (
+              <span className="font-semibold">
+                {` ${document.daysCount} 일 `}
+              </span>
+              )
+            </span>
           </span>
         </div>
         <div className="">
@@ -136,7 +142,7 @@ export default function VacationDocument({
             </div>
             <div className="flex-initial w-full" style={{ marginLeft: '38px' }}>
               <div className="flex justify-start gap-2 w-full">
-                <div className="flex-none w-[128px] text-xl font-medium">
+                <div className="flex-none w-[128px] text-xl font-semibold">
                   <span>
                     {parseType(
                       document.vacationType,
@@ -167,29 +173,38 @@ export default function VacationDocument({
           </div>
           <span className="ml-10 text-xl">{document.reason}</span>
         </div>
-        <div className="flex w-full justify-center items-center mt-24">
-          <h4 className="text-xl font-semibold">
+        <div
+          className="flex w-full justify-center items-center"
+          style={{ margin: '60px 0px' }}
+        >
+          <h3 className="font-bold text-xl">
             위와 같이 신청하오니 재가 바랍니다.
-          </h4>
+          </h3>
         </div>
 
         <div className="text-right text-xl tracking-widest mt-28">
-          <div className="inline-block w-32 mr-2">신 청 일 :</div>
+          <div className="inline-block w-32 mr-10">신 청 일 :</div>
           <div className="inline-block w-64">
-            {formatDate(document.createdDate, 'yyyy 년 MM 월 dd 일')}
+            {formatDate(document.createdDate, 'yyyy 년  MM 월  dd 일 ')}
           </div>
         </div>
-        <div className="text-right text-xl tracking-widest">
-          <div className="inline-block w-32 mr-2">신 청 자 :</div>
-          <div className="tracking-wide w-48 inline-block">
-            <span className="font-bold tracking-widest">
+        <div className="text-right text-xl tracking-widest relative">
+          <div className="inline-block w-32 mr-1">신 청 인 :</div>
+          <div
+            className="tracking-wide w-48 inline-block"
+            style={{ letterSpacing: '10px' }}
+          >
+            <span className="font-bold">
               {document.writer.name}
 
-              <span className="font-normal ml-10">(인)</span>
+              <span
+                className="font-normal"
+                style={{ letterSpacing: '1px', marginLeft: '20px' }}
+              >
+                (인)
+              </span>
             </span>
-          </div>
-          <div className="relative w-full">
-            <div className="absolute right-[-30px] bottom-[-15px] w-24">
+            <div className="absolute right-[-25px] bottom-[-13px] w-24">
               <img
                 alt="signature"
                 src={`/api/user/${document.writer.id}/document/signature`}
@@ -197,6 +212,7 @@ export default function VacationDocument({
             </div>
           </div>
         </div>
+        <div className="mb-10"></div>
       </div>
     </div>
   );
