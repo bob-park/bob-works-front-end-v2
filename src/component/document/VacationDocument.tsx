@@ -60,7 +60,7 @@ export default function VacationDocument({
   return (
     <div
       id="vacationDocument"
-      className=""
+      className="relative"
       style={{
         width: '996px',
         // height: '1409px',
@@ -68,6 +68,15 @@ export default function VacationDocument({
         padding: '90px 120px',
       }}
     >
+      {document.status === 'CANCEL' && (
+        <div className="absolute" style={{ top: '500px', left: '300px' }}>
+          <div className="grid place-content-center w-full h-full opacity-50">
+            <div className="text-red-700 font-black text-9xl tracking-widest -rotate-45 border-8 border-solid border-red-700 rounded p-10">
+              취 소
+            </div>
+          </div>
+        </div>
+      )}
       <div className="m-20 grid grid-col-1 gap-10">
         <div className="grid w-full justify-end m-1">
           <ApprovalLines lines={dummyLines} />

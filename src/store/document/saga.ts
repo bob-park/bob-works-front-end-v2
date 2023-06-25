@@ -63,7 +63,7 @@ function* watchRequestGetDocumentType() {
 function* callAddVacationDocument(
   action: ReturnType<typeof requestAddVacationDocument>,
 ) {
-  const { body, handleException } = action.payload;
+  const { body, afterHandle, handleException } = action.payload;
   const { handleAuthError } = handleException;
 
   const response: ApiResponse<Documents> = yield postCall(
@@ -73,6 +73,8 @@ function* callAddVacationDocument(
 
   if (response.state === 'SUCCESS') {
     yield put(successAddVacationDocumnet(response.data));
+
+    afterHandle && afterHandle();
   } else {
     yield put(failureAddVacationDocument());
 
@@ -152,7 +154,7 @@ function* watchRequestGetVacationDocument() {
 
 // cancel document
 function* callCancelDocument(action: ReturnType<typeof requestCancelDocument>) {
-  const { id, exceptionHandle } = action.payload;
+  const { id, afterHandle, exceptionHandle } = action.payload;
   const { handleAuthError } = exceptionHandle;
 
   const response: ApiResponse<Documents> = yield call(
@@ -162,6 +164,8 @@ function* callCancelDocument(action: ReturnType<typeof requestCancelDocument>) {
 
   if (response.state === 'SUCCESS') {
     yield put(successCancelDocument());
+
+    afterHandle && afterHandle();
   } else {
     yield put(failureCancelDocument());
 

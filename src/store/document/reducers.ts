@@ -33,6 +33,7 @@ const reducers = {
     state: DocumentsState,
     action: PayloadAction<{
       body: AddVacationRequest;
+      afterHandle?: () => void;
       handleException: ExceptionHandle;
     }>,
   ) => {
@@ -93,6 +94,7 @@ const reducers = {
     state: DocumentsState,
     action: PayloadAction<{
       id: number;
+      afterHandle?: () => void;
       exceptionHandle: ExceptionHandle;
     }>,
   ) => {

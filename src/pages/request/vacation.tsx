@@ -172,6 +172,7 @@ export default function VacationRequest() {
     dispatch(
       requestAddVacationDocument({
         body: addVacationRequest,
+        afterHandle: () => router.push('/document/search'),
         handleException: {
           handleAuthError: handleLogout,
         },

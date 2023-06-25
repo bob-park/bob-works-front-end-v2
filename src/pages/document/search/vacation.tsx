@@ -25,7 +25,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 // actions
-const { requestGetVacationDocument } = documentActions;
+const { requestGetVacationDocument, requestCancelDocument } = documentActions;
 
 function checkDisabledBtn(status?: DocumentsStatus): boolean {
   if (!status) {
@@ -95,7 +95,21 @@ export default function VacationDetail() {
   };
 
   const handleCancel = () => {
+    if (!documents) {
+      return;
+    }
+
     setShowConfirmCancel(false);
+
+    dispatch(
+      requestCancelDocument({
+        id: documents.id,
+        afterHandle: () => router.push('/document/search'),
+        exceptionHandle: {
+          handleAuthError: handleLogout,
+        },
+      }),
+    );
   };
 
   const handleBackDrop = () => {
