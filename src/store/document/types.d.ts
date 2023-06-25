@@ -1,11 +1,12 @@
-import { Pagable } from '@/store/types';
+import { Pageable } from '@/store/types';
 
 export type DocumentType = 'VACATION' | 'HOLIDAY_WORK';
 
 export type DocumentsState = {
   isLoading: boolean;
   types: DocumentsType[];
-  pageable: Pagable<Documents>;
+  pageable: Pageable<Documents>;
+  vacationDetail?: VacationDocumentDetail;
 };
 
 export type DocumentsType = {
@@ -39,6 +40,24 @@ export type Documents = {
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
 };
+export type DocumentApproval = {
+  id: nubmer;
+  lineId: number;
+  status: DocumentsState;
+  approvedDateTime?: Date;
+  reason?: string;
+};
+export type DocumentApprovalLine = {
+  id: number;
+  uniqueUserId: number;
+  userId: string;
+  username: string;
+  positionId: number;
+  positionName: string;
+  status: DocumentsState;
+  approvedDateTime?: Date;
+  reason?: string;
+};
 
 // add vacation request
 export type VacationType = 'GENERAL' | 'HOLIDAY_WORK';
@@ -51,4 +70,20 @@ export type AddVacationRequest = {
   vacationDateTo: Date;
   reason: string;
   useAlternativeVacationIds?: number[];
+};
+
+export type VacationDocument = {
+  vacationType: VacationType;
+  vacationSubType?: VacationSubType;
+  vacationDateFrom: Date;
+  vacationDateTo: Date;
+  daysCount: number;
+  reason: string;
+  approvals: DocumentApproval[];
+} & Documents;
+
+export type VacationDocumentDetail = {
+  document?: VacationDocument;
+  lines?: DocumentApprovalLine[];
+  useAlternativeVacations?: AlternativeVacation[];
 };

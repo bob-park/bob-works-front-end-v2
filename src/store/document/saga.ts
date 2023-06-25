@@ -4,7 +4,8 @@ import { getCall, postCall } from '@/utils/common';
 
 import { userActions } from '@/store/user';
 import { documentActions } from '.';
-import { Documents, DocumentsType } from './types';
+import { Documents, DocumentsType, VacationDocumentDetail } from './types';
+import { Pageable } from '../types';
 
 const { removeAuthentication } = userActions;
 const {
@@ -20,6 +21,10 @@ const {
   requestSearchDocument,
   successSearchDocument,
   failureSearchDocument,
+  // get vacation document
+  requestGetVacationDocument,
+  successGetVacationDocument,
+  failureGetVacationDocument,
 } = documentActions;
 
 // get document type
@@ -84,13 +89,13 @@ function* callSearchDocument(action: ReturnType<typeof requestSearchDocument>) {
   const { params, exceptionHandle } = action.payload;
   const { handleAuthError } = exceptionHandle;
 
-  const response: ApiResponse<Documents[]> = yield getCall(
+  const response: ApiResponse<Pageable<Documents>> = yield getCall(
     '/api/document/search',
     params,
   );
 
   if (response.state === 'SUCCESS') {
-    yield put(successSearchDocument(response.data || []));
+    yield put(successSearchDocument(response.data));
   } else {
     yield put(failureSearchDocument());
 
@@ -106,10 +111,41 @@ function* watchRequestSearchDocument() {
   yield takeLatest(requestSearchDocument, callSearchDocument);
 }
 
+// get vacation document
+function* callGetVacationDocument(
+  action: ReturnType<typeof requestGetVacationDocument>,
+) {
+  const { id, exceptionHandle } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<VacationDocumentDetail> = yield call(
+    getCall,
+    `/api/document/vacation/${id}`,
+    null,
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successGetVacationDocument(response.data));
+  } else {
+    yield put(failureGetVacationDocument());
+
+    if (response.status === 401) {
+      yield put(removeAuthentication());
+
+      handleAuthError && handleAuthError();
+    }
+  }
+}
+
+function* watchRequestGetVacationDocument() {
+  yield takeLatest(requestGetVacationDocument, callGetVacationDocument);
+}
+
 export default function* documentSagas() {
   yield all([
     fork(watchRequestGetDocumentType),
     fork(watchAddVacationDocument),
     fork(watchRequestSearchDocument),
+    fork(watchRequestGetVacationDocument),
   ]);
 }

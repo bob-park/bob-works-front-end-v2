@@ -7,7 +7,7 @@ export type PaginationParams = {
   page: number;
 };
 
-export type Pagable<T> = {
+export type Pageable<T> = {
   content: T[];
   total: number;
   pageable: Pagination;

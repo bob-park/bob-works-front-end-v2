@@ -1,11 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { ExceptionHandle, Pagable, PaginationParams } from '@/store/types';
+import { ExceptionHandle, Pageable, PaginationParams } from '@/store/types';
 import {
   AddVacationRequest,
   Documents,
   DocumentsState,
   DocumentsStatus,
   DocumentsType,
+  VacationDocumentDetail,
 } from './types';
 
 const reducers = {
@@ -57,12 +58,33 @@ const reducers = {
   },
   successSearchDocument: (
     state: DocumentsState,
-    action: PayloadAction<Pagable<Documents>>,
+    action: PayloadAction<Pageable<Documents> | undefined>,
   ) => {
     state.isLoading = false;
-    state.pageable = action.payload;
+
+    if (action.payload) {
+      state.pageable = action.payload;
+    }
   },
   failureSearchDocument: (state: DocumentsState) => {
+    state.isLoading = false;
+  },
+
+  // get vacation detail
+  requestGetVacationDocument: (
+    state: DocumentsState,
+    action: PayloadAction<{ id: number; exceptionHandle: ExceptionHandle }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successGetVacationDocument: (
+    state: DocumentsState,
+    action: PayloadAction<VacationDocumentDetail | undefined>,
+  ) => {
+    state.isLoading = false;
+    state.vacationDetail = action.payload;
+  },
+  failureGetVacationDocument: (state: DocumentsState) => {
     state.isLoading = false;
   },
 };
