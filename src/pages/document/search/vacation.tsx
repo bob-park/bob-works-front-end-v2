@@ -121,7 +121,13 @@ export default function VacationDetail() {
 
           {/* contents */}
           <Card className="bg-base-100 shadow-sm overflow-auto p-10 w-[996px]">
-            <VacationDocument document={document} lines={lines} />
+            <Card.Body>
+              <VacationDocument
+                document={document}
+                lines={lines}
+                useAlternativeVacations={useAlternativeVacations}
+              />
+            </Card.Body>
           </Card>
         </div>
       </div>

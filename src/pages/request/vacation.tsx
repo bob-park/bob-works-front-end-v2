@@ -388,6 +388,7 @@ export default function VacationRequest() {
         </Card>
       </div>
       <Modal
+        className="w-11/12 max-w-5xl"
         open={openSelectAlternative}
         onClickBackdrop={() => setOpenSelectAlternative(false)}
       >

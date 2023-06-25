@@ -6,11 +6,32 @@ import { formatDate, parseSubType, parseType } from '@/utils/ParseUtils';
 type VacationDocumentProps = {
   document?: VacationDocument;
   lines?: DocumentApprovalLine[];
+  useAlternativeVacations?: AlternativeVacation[];
+};
+
+type UseAlternativeVacationListProps = {
+  useAlternativeVacations: AlternativeVacation[];
+};
+
+const UseAlternativeVacationList = ({
+  useAlternativeVacations,
+}: UseAlternativeVacationListProps) => {
+  return (
+    <div className="grid grid-cols-1">
+      {useAlternativeVacations.map((item) => (
+        <div key={`alternative_vacation_list_${item.id}`} className="text-xl">
+          (<span>{formatDate(item.effectiveDate)}</span> -{' '}
+          <span>{item.effectiveReason}</span>)
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default function VacationDocument({
   document,
   lines,
+  useAlternativeVacations,
 }: VacationDocumentProps) {
   if (!document || !lines) {
     return;
@@ -39,39 +60,59 @@ export default function VacationDocument({
   return (
     <div
       id="vacationDocument"
-      className="m-10 p-10"
+      className="m-10 px-8 py-10"
       style={{ height: '1409px' }}
     >
-      <div className="m-20 grid grid-col-1 gap-8">
+      <div className="m-20 grid grid-col-1 gap-10">
         <div className="grid w-full justify-end m-1">
           <ApprovalLines lines={dummyLines} />
         </div>
 
-        <div className="flex w-full justify-center items-center mt-16">
-          <h3 className="text-4xl tracking-widest font-bold">휴 가 계</h3>
+        <div className="flex w-full justify-center items-center">
+          <h1
+            className="font-bold"
+            style={{
+              margin: '50px 0px',
+              fontSize: '2.8rem',
+              letterSpacing: '20px',
+              lineHeight: '2.5rem',
+            }}
+          >
+            휴 가 계
+          </h1>
         </div>
-        <div className="mt-20">
-          <div className="inline-block w-32 text-right mr-2 text-lg">
-            성 명 :
+        <div className="" style={{ marginTop: '20px' }}>
+          <div className="inline-block w-32 text-right mr-10 text-xl">
+            성 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;명 :
           </div>
-          <span className="ml-10 text-xl font-medium">{writer.name}</span>
+          <span
+            className="ml-10 text-xl font-semibold"
+            style={{ letterSpacing: '10px' }}
+          >
+            {writer.name}
+          </span>
         </div>
         <div>
-          <div className="inline-block w-32 text-right mr-2 text-lg">
-            부 서 :
+          <div className="inline-block w-32 text-right mr-10 text-xl">
+            부 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;서 :
           </div>
-          <span className="ml-10 text-xl font-medium">{writer.team.name}</span>
+          <span className="ml-10 text-xl font-semibold">
+            {writer.team.name}
+          </span>
         </div>
         <div>
-          <div className="inline-block w-32 text-right mr-2 text-lg">
-            직 급 :
+          <div className="inline-block w-32 text-right mr-10 text-xl">
+            직 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;급 :
           </div>
-          <span className="ml-10 text-xl font-medium">
+          <span
+            className="ml-10 text-xl font-semibold"
+            style={{ letterSpacing: '10px' }}
+          >
             {writer.position?.name}
           </span>
         </div>
         <div>
-          <div className="inline-block w-32 text-right mr-2 text-lg">
+          <div className="inline-block w-32 text-right mr-10 text-xl">
             휴 가 기 간 :
           </div>
           <span className="ml-10 text-xl font-normal tracking-widest">
@@ -85,27 +126,44 @@ export default function VacationDocument({
             <span className="ml-4">( {`${document.daysCount} 일`} )</span>
           </span>
         </div>
-        <div>
-          <div className="inline-block w-32 text-right mr-2 text-lg">
-            휴 가 구 분 :
+        <div className="">
+          <div className="flex justify-start">
+            <div
+              className="flex-none w-[128px] text-xl text-right"
+              style={{ marginLeft: '34px' }}
+            >
+              휴 가 구 분 :
+            </div>
+            <div className="flex-initial w-full" style={{ marginLeft: '38px' }}>
+              <div className="flex justify-start gap-2 w-full">
+                <div className="flex-none w-[128px] text-xl font-medium">
+                  <span>
+                    {parseType(
+                      document.vacationType,
+                      document.vacationSubType != null,
+                    )}
+                  </span>
+
+                  {document.vacationSubType && (
+                    <span className="ml-2 text-sm">
+                      ( {parseSubType(document.vacationSubType)} )
+                    </span>
+                  )}
+                </div>
+                <div className="flex-initial w-full">
+                  {useAlternativeVacations && (
+                    <UseAlternativeVacationList
+                      useAlternativeVacations={useAlternativeVacations}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
-          <span className="ml-10 text-xl font-medium">
-            <span>
-              {parseType(
-                document.vacationType,
-                document.vacationSubType != null,
-              )}
-            </span>
-            {document.vacationSubType && (
-              <span className="ml-4">
-                ( {parseSubType(document.vacationSubType)} )
-              </span>
-            )}
-          </span>
         </div>
         <div>
-          <div className="inline-block w-32 text-right mr-2 text-lg">
-            사 유 :
+          <div className="inline-block w-32 text-right mr-10 text-xl">
+            사 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;유 :
           </div>
           <span className="ml-10 text-xl">{document.reason}</span>
         </div>
