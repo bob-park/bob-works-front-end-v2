@@ -59,3 +59,26 @@ export async function postCall<B, T>(
       };
     });
 }
+
+export async function deleteCall<T>(url: string): Promise<ApiResponse<T>> {
+  return await client
+    .delete(url)
+    .then((res) => {
+      return {
+        state: 'SUCCESS' as ApiResponseState,
+        status: res.status,
+        data: res.data as T,
+      };
+    })
+    .catch((err) => {
+      console.error(err);
+
+      return {
+        state: 'FAILURE' as ApiResponseState,
+        status: err.response.status,
+        error: {
+          message: err.response.data?.error?.message,
+        },
+      };
+    });
+}

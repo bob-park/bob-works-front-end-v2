@@ -98,6 +98,10 @@ export default function VacationDetail() {
     setShowConfirmCancel(false);
   };
 
+  const handleBackDrop = () => {
+    router.back();
+  };
+
   return (
     <>
       <div className="w-full h-full">
@@ -105,7 +109,7 @@ export default function VacationDetail() {
           {/* title */}
           <div>
             <div className="inline-block">
-              <Button color="ghost">
+              <Button color="ghost" onClick={handleBackDrop}>
                 <IoChevronBackSharp className="w-5 h-5" />
               </Button>
               <span className="text-xl font-semibold ml-2">상세</span>

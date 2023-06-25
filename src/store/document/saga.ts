@@ -1,6 +1,6 @@
 import { call, all, takeLatest, fork, put, delay } from 'redux-saga/effects';
 
-import { getCall, postCall } from '@/utils/common';
+import { getCall, postCall, deleteCall } from '@/utils/common';
 
 import { userActions } from '@/store/user';
 import { documentActions } from '.';
@@ -25,6 +25,10 @@ const {
   requestGetVacationDocument,
   successGetVacationDocument,
   failureGetVacationDocument,
+  // cancel document
+  requestCancelDocument,
+  successCancelDocument,
+  failureCancelDocument,
 } = documentActions;
 
 // get document type
@@ -125,6 +129,11 @@ function* callGetVacationDocument(
   );
 
   if (response.state === 'SUCCESS') {
+    if (!response.data) {
+      yield put(failureGetVacationDocument());
+      throw new Error('No exist data');
+    }
+
     yield put(successGetVacationDocument(response.data));
   } else {
     yield put(failureGetVacationDocument());
@@ -141,11 +150,39 @@ function* watchRequestGetVacationDocument() {
   yield takeLatest(requestGetVacationDocument, callGetVacationDocument);
 }
 
+// cancel document
+function* callCancelDocument(action: ReturnType<typeof requestCancelDocument>) {
+  const { id, exceptionHandle } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<Documents> = yield call(
+    deleteCall,
+    `/api/document/${id}/cancel`,
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successCancelDocument());
+  } else {
+    yield put(failureCancelDocument());
+
+    if (response.status === 401) {
+      yield put(removeAuthentication());
+
+      handleAuthError && handleAuthError();
+    }
+  }
+}
+
+function* watchCancelDocument() {
+  yield takeLatest(requestCancelDocument, callCancelDocument);
+}
+
 export default function* documentSagas() {
   yield all([
     fork(watchRequestGetDocumentType),
     fork(watchAddVacationDocument),
     fork(watchRequestSearchDocument),
     fork(watchRequestGetVacationDocument),
+    fork(watchCancelDocument),
   ]);
 }

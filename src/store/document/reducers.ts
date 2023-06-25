@@ -7,6 +7,7 @@ import {
   DocumentsStatus,
   DocumentsType,
   VacationDocumentDetail,
+  VacationType,
 } from './types';
 
 const reducers = {
@@ -79,12 +80,28 @@ const reducers = {
   },
   successGetVacationDocument: (
     state: DocumentsState,
-    action: PayloadAction<VacationDocumentDetail | undefined>,
+    action: PayloadAction<VacationDocumentDetail>,
   ) => {
     state.isLoading = false;
     state.vacationDetail = action.payload;
   },
   failureGetVacationDocument: (state: DocumentsState) => {
+    state.isLoading = false;
+  },
+  // cancel vacation document
+  requestCancelDocument: (
+    state: DocumentsState,
+    action: PayloadAction<{
+      id: number;
+      exceptionHandle: ExceptionHandle;
+    }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successCancelDocument: (state: DocumentsState) => {
+    state.isLoading = false;
+  },
+  failureCancelDocument: (state: DocumentsState) => {
     state.isLoading = false;
   },
 };
