@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 
 // daisyui
 import {
-  Breadcrumbs,
   Form,
   Radio,
   Select,
@@ -210,13 +209,6 @@ export default function VacationRequest() {
   return (
     <main className="w-full h-full">
       <div className="grid grid-cols-1 gap-8">
-        {/* refactoring 이 필요해 보이는 군 */}
-        {/* <Breadcrumbs>
-          <Breadcrumbs.Item>대시보드</Breadcrumbs.Item>
-          <Breadcrumbs.Item>문서 신청</Breadcrumbs.Item>
-          <Breadcrumbs.Item>휴가계 신청</Breadcrumbs.Item>
-        </Breadcrumbs> */}
-
         <div className="my-4">
           <h2 className="text-2xl font-bold">휴가계 신청</h2>
         </div>

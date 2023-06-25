@@ -14,6 +14,7 @@ const initialState: DocumentsState = {
       size: 0,
     },
   },
+  vacationDetail: {},
 };
 
 export default createSlice({

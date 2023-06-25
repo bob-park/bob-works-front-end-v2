@@ -6,21 +6,13 @@ export type DocumentsState = {
   isLoading: boolean;
   types: DocumentsType[];
   pageable: Pageable<Documents>;
-  vacationDetail?: VacationDocumentDetail;
+  vacationDetail: VacationDocumentDetail;
 };
 
 export type DocumentsType = {
   id: number;
   type: DocumentType;
   name: string;
-  approvalLine?: DocumentApprovalLine;
-};
-
-export type DocumentApprovalLine = {
-  id: number;
-  userId: number;
-  teamId: number;
-  next?: DocumentApprovalLine;
 };
 
 // documents
@@ -54,7 +46,7 @@ export type DocumentApprovalLine = {
   username: string;
   positionId: number;
   positionName: string;
-  status: DocumentsState;
+  status: DocumentsStatus;
   approvedDateTime?: Date;
   reason?: string;
 };
