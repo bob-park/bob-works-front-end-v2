@@ -49,17 +49,21 @@ const Stamp = ({
 
 export default function ApprovalLines({ lines }: ApprovalLinesProps) {
   return (
-    <table className="text-center" style={{ border: '1px solid black' }}>
+    <table
+      className="text-center font-bold"
+      style={{ border: '1px solid black' }}
+    >
       <tbody className="">
         <tr className="">
           <td
-            className="px-1 "
+            className="px-1"
             rowSpan={2}
             style={{
               writingMode: 'vertical-lr',
               height: '120px',
               letterSpacing: '2px',
               borderRight: '1px solid black',
+              paddingBottom: '4px',
             }}
           >
             신 청
@@ -70,10 +74,11 @@ export default function ApprovalLines({ lines }: ApprovalLinesProps) {
               className="px-1"
               style={{
                 width: '100px',
-                height: '30px',
+                height: '15px',
                 letterSpacing: '2px',
                 borderRight: '1px solid black',
                 borderBottom: '1px solid black',
+                paddingBottom: '10px',
               }}
             >
               {line.positionName}
@@ -87,6 +92,7 @@ export default function ApprovalLines({ lines }: ApprovalLinesProps) {
               height: '120px',
               letterSpacing: '2px',
               borderRight: '1px solid black',
+              paddingBottom: '4px',
             }}
           >
             승 인
@@ -95,9 +101,10 @@ export default function ApprovalLines({ lines }: ApprovalLinesProps) {
             className=""
             style={{
               width: '100px',
-              height: '30px',
+              height: '15px',
               letterSpacing: '2px',
               borderBottom: '1px solid black',
+              paddingBottom: '10px',
             }}
           >
             대표이사

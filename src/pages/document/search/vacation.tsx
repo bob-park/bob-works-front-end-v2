@@ -20,6 +20,10 @@ import { documentActions } from '@/store/document';
 import { DocumentsStatus } from '@/store/document/types';
 import VacationDocument from '@/component/document/VacationDocument';
 
+// utils
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
 // actions
 const { requestGetVacationDocument } = documentActions;
 
@@ -35,12 +39,14 @@ export default function VacationDetail() {
   // router
   const router = useRouter();
 
-  console.log(router.query);
-
   // store
   const dispatch = useAppDispatch();
   const { vacationDetail } = useAppSelector((state) => state.document);
-  const { document, lines, useAlternativeVacations } = vacationDetail;
+  const {
+    document: documents,
+    lines,
+    useAlternativeVacations,
+  } = vacationDetail;
 
   // state
   const [showConfirmCancel, setShowConfirmCancel] = useState<boolean>(false);
@@ -72,7 +78,21 @@ export default function VacationDetail() {
 
   const handlePrint = () => {};
 
-  const handleCapture = () => {};
+  const handleCapture = () => {
+    if (!documents) {
+      return;
+    }
+
+    const docElement = document.getElementById('vacationDocument');
+    if (!docElement) {
+      return;
+    }
+    html2canvas(docElement).then((canvas) => {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
+      pdf.save(`${documents.id}_${documents.writer.name}.pdf`);
+    });
+  };
 
   const handleCancel = () => {
     setShowConfirmCancel(false);
@@ -102,7 +122,7 @@ export default function VacationDetail() {
 
               <Button
                 onClick={handleCapture}
-                disabled={checkDisabledBtn(document?.status)}
+                disabled={checkDisabledBtn(documents?.status)}
               >
                 <FiDownload className="mr-2 h-5 w-5" />
                 PDF 다운로드
@@ -111,7 +131,7 @@ export default function VacationDetail() {
               <Button
                 onClick={() => setShowConfirmCancel(true)}
                 color="error"
-                disabled={checkDisabledBtn(document?.status)}
+                disabled={checkDisabledBtn(documents?.status)}
               >
                 <MdOutlineCancel className="mr-2 h-5 w-5" />
                 취소
@@ -120,10 +140,10 @@ export default function VacationDetail() {
           </div>
 
           {/* contents */}
-          <Card className="bg-base-100 shadow-sm overflow-auto p-10 w-[996px]">
+          <Card className="bg-base-100 shadow-sm overflow-auto">
             <Card.Body>
               <VacationDocument
-                document={document}
+                document={documents}
                 lines={lines}
                 useAlternativeVacations={useAlternativeVacations}
               />

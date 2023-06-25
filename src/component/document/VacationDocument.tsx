@@ -17,7 +17,7 @@ const UseAlternativeVacationList = ({
   useAlternativeVacations,
 }: UseAlternativeVacationListProps) => {
   return (
-    <div className="grid grid-cols-1">
+    <div className="grid grid-cols-1 gap-2">
       {useAlternativeVacations.map((item) => (
         <div key={`alternative_vacation_list_${item.id}`} className="text-xl">
           (<span>{formatDate(item.effectiveDate)}</span> -{' '}
@@ -60,8 +60,13 @@ export default function VacationDocument({
   return (
     <div
       id="vacationDocument"
-      className="m-10 px-8 py-10"
-      style={{ height: '1409px' }}
+      className=""
+      style={{
+        width: '996px',
+        // height: '1409px',
+        margin: '20px',
+        padding: '90px 120px',
+      }}
     >
       <div className="m-20 grid grid-col-1 gap-10">
         <div className="grid w-full justify-end m-1">
@@ -204,7 +209,13 @@ export default function VacationDocument({
                 (인)
               </span>
             </span>
-            <div className="absolute right-[-25px] bottom-[-13px] w-24">
+            <div
+              className="absolute w-24"
+              style={{
+                right: '-20px',
+                bottom: '-15px',
+              }}
+            >
               <img
                 alt="signature"
                 src={`/api/user/${document.writer.id}/document/signature`}
