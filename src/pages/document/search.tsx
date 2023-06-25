@@ -162,11 +162,11 @@ export default function DocumentList() {
   return (
     <main className="w-full h-full">
       <div className="grid grid-cols-1 gap-8">
-        <Breadcrumbs>
+        {/* <Breadcrumbs>
           <Breadcrumbs.Item>대시보드</Breadcrumbs.Item>
           <Breadcrumbs.Item>문서 결재</Breadcrumbs.Item>
           <Breadcrumbs.Item>결재 신청 목록</Breadcrumbs.Item>
-        </Breadcrumbs>
+        </Breadcrumbs> */}
       </div>
 
       <div className="my-12">
@@ -237,7 +237,7 @@ export default function DocumentList() {
           </div>
         </div>
 
-        <Card className="bg-base-100 h-[500px] overflow-auto">
+        <Card className="bg-base-100 overflow-auto">
           <DocumentTable firstCheckbox headers={headers} dataList={dataList} />
         </Card>
 

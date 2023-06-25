@@ -91,7 +91,7 @@ function App({ Component, pageProps }: AppProps) {
       <Drawer
         className="lg:drawer-open h-screen"
         side={
-          <aside className="w-80 h-full bg-base-100">
+          <aside className="w-80 h-full bg-base-100 lg:fixed">
             <div className="bg-opacity-90 px-4 py-2 backdrop-blur flex justify-center bg-base-100 shadow-sm h-[78px]">
               <a className="btn btn-ghost normal-case px-2 mx-2 text-2xl font-bold">
                 Bob Works
@@ -150,7 +150,7 @@ function App({ Component, pageProps }: AppProps) {
         onClickOverlay={toggleVisible}
       >
         <div className="h-full relative">
-          <Navbar className="bg-base-100 shadow-sm">
+          <Navbar className="bg-base-100 shadow-sm sticky top-0">
             <Navbar.Start className="flex-none lg:hidden">
               <div className="flex-none lg:hidden">
                 <Button shape="square" color="ghost" onClick={toggleVisible}>
@@ -203,7 +203,7 @@ function App({ Component, pageProps }: AppProps) {
               </Dropdown>
             </Navbar.End>
           </Navbar>
-          <div className="flex items-center justify-center m-10 min-w-[746px] max-w-[1280px] overflow-auto">
+          <div className="flex items-center justify-center m-10 min-w-[746px] max-w-[1280px] lg:ml-[320px]">
             <Component {...pageProps} />
           </div>
 
