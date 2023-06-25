@@ -71,11 +71,17 @@ function App({ Component, pageProps }: AppProps) {
   };
 
   const activeMenuItem = (menuPath: string): string => {
-    if (router.pathname !== menuPath) {
-      return '';
+    const pathname = router.pathname;
+
+    if (menuPath === '/') {
+      return pathname.length === 1 ? 'active' : '';
     }
 
-    return 'active';
+    if (pathname.startsWith(menuPath)) {
+      return 'active';
+    }
+
+    return '';
   };
 
   const handleLogout = () => {
@@ -203,7 +209,7 @@ function App({ Component, pageProps }: AppProps) {
               </Dropdown>
             </Navbar.End>
           </Navbar>
-          <div className="flex items-center justify-center m-10 min-w-[746px] max-w-[1280px] lg:ml-[320px]">
+          <div className="flex items-center justify-center m-10 min-w-[746px] max-w-[1280px] lg:ml-[350px]">
             <Component {...pageProps} />
           </div>
 

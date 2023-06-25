@@ -32,7 +32,11 @@ import DocumentTable from '@/component/DocumentTable';
 
 // utils
 import { parseDocumentType, parseDocumentStatus } from '@/utils/ParseUtils';
-import { DocumentsStatus } from '@/store/document/types';
+import {
+  DocumentType,
+  DocumentsStatus,
+  DocumentsType,
+} from '@/store/document/types';
 import DocumentPagination from '@/component/DocumentPagination';
 import { getTotalPageCount } from '@/utils/paginationUtils';
 
@@ -159,6 +163,12 @@ export default function DocumentList() {
     );
   };
 
+  const handleMoveDetail = (id: number, type: DocumentType) => {
+    const moveUri = `/document/search/${type.toLowerCase()}?id=${id}`;
+
+    router.push(moveUri);
+  };
+
   return (
     <main className="w-full h-full">
       <div className="grid grid-cols-1 gap-8">
@@ -238,7 +248,12 @@ export default function DocumentList() {
         </div>
 
         <Card className="bg-base-100 overflow-auto">
-          <DocumentTable firstCheckbox headers={headers} dataList={dataList} />
+          <DocumentTable
+            firstCheckbox
+            headers={headers}
+            dataList={dataList}
+            onRowClick={handleMoveDetail}
+          />
         </Card>
 
         <div className="flex justify-center">
