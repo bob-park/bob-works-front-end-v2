@@ -37,7 +37,7 @@ export type Documents = {
 export type DocumentApproval = {
   id: nubmer;
   document: Documents;
-  status: DocumentsState;
+  status: DocumentsStatus;
   approvedDateTime?: Date;
   reason?: string;
 };
