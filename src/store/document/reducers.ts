@@ -155,6 +155,24 @@ const reducers = {
   failureApprovalDocument: (state: DocumentsState) => {
     state.isLoading = false;
   },
+  // proceed approval document
+  requestProceedApprovalDocument: (
+    state: DocumentsState,
+    action: PayloadAction<{
+      approvalId: number;
+      body: {
+        status: DocumentsStatus;
+        reason?: string;
+      };
+      exceptionHandle: ExceptionHandle;
+    }>,
+  ) => {},
+  successProceedApprovalDocument: (state: DocumentsState) => {
+    state.isLoading = false;
+  },
+  failureProceedApprovalDocument: (state: DocumentsState) => {
+    state.isLoading = false;
+  },
 };
 
 export default reducers;

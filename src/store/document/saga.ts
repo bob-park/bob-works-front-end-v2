@@ -1,6 +1,6 @@
 import { call, all, takeLatest, fork, put, delay } from 'redux-saga/effects';
 
-import { getCall, postCall, deleteCall } from '@/utils/common';
+import { getCall, postCall, deleteCall, putCall } from '@/utils/common';
 
 import { userActions } from '@/store/user';
 import { documentActions } from '.';
@@ -42,6 +42,10 @@ const {
   requestApprovalDocument,
   successApprovalDocument,
   failureApprovalDocument,
+  // proceed approval document
+  requestProceedApprovalDocument,
+  successProceedApprovalDocument,
+  failureProceedApprovalDocument,
 } = documentActions;
 
 // get document type
@@ -254,6 +258,36 @@ function* watchGetApprovalDocument() {
   yield takeLatest(requestApprovalDocument, callgetApprovalDocument);
 }
 
+//  proceed apprval document
+function* callProceedApprovalDocument(
+  action: ReturnType<typeof requestProceedApprovalDocument>,
+) {
+  const { approvalId, body, exceptionHandle } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<DocumentApproval> = yield call(
+    putCall,
+    `/api/document/approval/${approvalId}`,
+    body,
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successProceedApprovalDocument());
+  } else {
+    yield put(failureProceedApprovalDocument());
+
+    if (response.status === 401) {
+      yield put(removeAuthentication());
+
+      handleAuthError && handleAuthError();
+    }
+  }
+}
+
+function* watchProceedApprovalDocument() {
+  yield takeLatest(requestProceedApprovalDocument, callProceedApprovalDocument);
+}
+
 export default function* documentSagas() {
   yield all([
     fork(watchRequestGetDocumentType),
@@ -263,5 +297,6 @@ export default function* documentSagas() {
     fork(watchCancelDocument),
     fork(watchGetApprovalDocuments),
     fork(watchGetApprovalDocument),
+    fork(watchProceedApprovalDocument),
   ]);
 }

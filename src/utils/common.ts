@@ -60,6 +60,32 @@ export async function postCall<B, T>(
     });
 }
 
+export async function putCall<B, T>(
+  url: string,
+  body: B,
+): Promise<ApiResponse<T>> {
+  return await client
+    .put(url, body)
+    .then((res) => {
+      return {
+        state: 'SUCCESS' as ApiResponseState,
+        status: res.status,
+        data: res.data as T,
+      };
+    })
+    .catch((err) => {
+      console.error(err);
+
+      return {
+        state: 'FAILURE' as ApiResponseState,
+        status: err.response.status,
+        error: {
+          message: err.response.data?.error?.message,
+        },
+      };
+    });
+}
+
 export async function deleteCall<T>(url: string): Promise<ApiResponse<T>> {
   return await client
     .delete(url)
