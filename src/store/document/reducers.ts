@@ -164,6 +164,7 @@ const reducers = {
         status: DocumentsStatus;
         reason?: string;
       };
+      afterHandle?: () => void;
       exceptionHandle: ExceptionHandle;
     }>,
   ) => {},

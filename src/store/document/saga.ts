@@ -262,7 +262,7 @@ function* watchGetApprovalDocument() {
 function* callProceedApprovalDocument(
   action: ReturnType<typeof requestProceedApprovalDocument>,
 ) {
-  const { approvalId, body, exceptionHandle } = action.payload;
+  const { approvalId, body, afterHandle, exceptionHandle } = action.payload;
   const { handleAuthError } = exceptionHandle;
 
   const response: ApiResponse<DocumentApproval> = yield call(
@@ -273,6 +273,8 @@ function* callProceedApprovalDocument(
 
   if (response.state === 'SUCCESS') {
     yield put(successProceedApprovalDocument());
+
+    afterHandle && afterHandle();
   } else {
     yield put(failureProceedApprovalDocument());
 

@@ -19,14 +19,18 @@ import { DocumentsStatus } from '@/store/document/types';
 import VacationDocument from '@/components/document/VacationDocument';
 
 // actions
-const { requestApprovalDocument, requestGetVacationDocument } = documentActions;
+const {
+  requestApprovalDocument,
+  requestGetVacationDocument,
+  requestProceedApprovalDocument,
+} = documentActions;
 
 function checkDisabledBtn(status?: DocumentsStatus): boolean {
   if (!status) {
     return false;
   }
 
-  return status === 'CANCEL' || status === 'REJECT';
+  return status === 'CANCEL' || status === 'REJECT' || status === 'APPROVE';
 }
 
 export default function ApprovalVacation() {
@@ -88,11 +92,45 @@ export default function ApprovalVacation() {
   };
 
   const handleReject = () => {
+    if (!approvalDetail) {
+      return;
+    }
+
+    handleProceedApprove(approvalDetail.id, 'REJECT', rejectReason);
+
     setOpenRejectModal(false);
   };
 
   const handleApprove = () => {
+    if (!approvalDetail) {
+      return;
+    }
+
+    handleProceedApprove(approvalDetail.id, 'APPROVE');
+
     setOpenApproveModal(false);
+  };
+
+  const handleProceedApprove = (
+    approvalId: number,
+    status: DocumentsStatus,
+    reason?: string,
+  ) => {
+    dispatch(
+      requestProceedApprovalDocument({
+        approvalId,
+        body: {
+          status,
+          reason,
+        },
+        afterHandle: () => {
+          router.push('/document/approve/search');
+        },
+        exceptionHandle: {
+          handleAuthError: handleLogout,
+        },
+      }),
+    );
   };
 
   return (
