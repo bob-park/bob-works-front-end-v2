@@ -23,30 +23,15 @@ import { format } from 'date-fns';
 // hooks
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 
-// store
-import { documentActions } from '@/store/document';
-import { PaginationParams } from '@/store/types';
-
 // component
 import DocumentTable from '@/components/DocumentTable';
 
-// utils
 import { parseDocumentType, parseDocumentStatus } from '@/utils/ParseUtils';
-import {
-  DocumentType,
-  DocumentsStatus,
-  DocumentsType,
-} from '@/store/document/types';
-import DocumentPagination from '@/components/DocumentPagination';
-import { getTotalPageCount } from '@/utils/paginationUtils';
 
 type SelectValue = {
   id: string;
   name: string;
 };
-
-// actions
-const { requestGetDocumentType, requestSearchDocument } = documentActions;
 
 const documentStatus: SelectValue[] = [
   {
@@ -75,33 +60,7 @@ const documentStatus: SelectValue[] = [
   },
 ];
 
-const headers = [
-  {
-    id: 'id',
-    value: '문서 번호',
-  },
-  {
-    id: 'type',
-    value: '문서 종류',
-    parse: (input: any) => parseDocumentType(input as string),
-  },
-  {
-    id: 'status',
-    value: '결재 상태',
-    parse: (input: any) => parseDocumentStatus(input as DocumentsStatus),
-  },
-  {
-    id: 'writer',
-    value: '작성자',
-  },
-  {
-    id: 'createdDate',
-    value: '신청일',
-    parse: (input: Date) => format(new Date(input), 'yyyy-MM-dd hh:mm:ss'),
-  },
-];
-
-export default function DocumentList() {
+export default function ApproveSearch() {
   // next
   const router = useRouter();
 
@@ -111,38 +70,6 @@ export default function DocumentList() {
     (state) => state.document,
   );
 
-  // state
-  const [page, setPage] = useState<PaginationParams>({
-    size: 10,
-    page: 0,
-  });
-
-  const dataList = pageable.content.map((item) => {
-    return {
-      id: item.id,
-      type: item.documentType.type,
-      status: item.status,
-      writer: item.writer.name,
-      createdDate: item.createdDate,
-    };
-  });
-
-  // useEffect
-  useEffect(() => {
-    dispatch(
-      requestGetDocumentType({
-        handleAuthError: handleLogout,
-      }),
-    );
-
-    // handleSearch(page);
-  }, []);
-
-  // useEffect
-  useEffect(() => {
-    handleSearch(page);
-  }, [page]);
-
   // handle
   const handleLogout = () => {
     router.push('/api/logout');
@@ -151,30 +78,12 @@ export default function DocumentList() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
-
-  const handleSearch = (params: PaginationParams) => {
-    dispatch(
-      requestSearchDocument({
-        params,
-        exceptionHandle: {
-          handleAuthError: handleLogout,
-        },
-      }),
-    );
-  };
-
-  const handleMoveDetail = (id: number, type: DocumentType) => {
-    const moveUri = `/document/search/${type.toLowerCase()}?id=${id}`;
-
-    router.push(moveUri);
-  };
-
   return (
     <main className="w-full h-full">
       <div className="grid grid-cols-1 gap-8"></div>
 
       <div className="my-4">
-        <h2 className="text-2xl font-bold">결재 신청 목록</h2>
+        <h2 className="text-2xl font-bold">결재 대기 목록</h2>
       </div>
 
       {/* contents */}
@@ -239,24 +148,6 @@ export default function DocumentList() {
           <div>
             총 <span className="font-bold">{pageable.total}</span> 개
           </div>
-        </div>
-
-        <Card className="bg-base-100 overflow-auto">
-          <DocumentTable
-            firstCheckbox
-            headers={headers}
-            dataList={dataList}
-            onRowClick={handleMoveDetail}
-          />
-        </Card>
-
-        <div className="flex justify-center">
-          <DocumentPagination
-            total={getTotalPageCount(pageable.total, pageable.pageable.size)}
-            current={pageable.pageable.page + 1}
-            onPrev={() => setPage({ ...page, page: page.page - 1 })}
-            onNext={() => setPage({ ...page, page: page.page + 1 })}
-          />
         </div>
       </div>
     </main>

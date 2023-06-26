@@ -125,10 +125,13 @@ function App({ Component, pageProps }: AppProps) {
                 </Link>
               </Menu.Item>
               <Menu.Item>
-                <a>
+                <Link
+                  className={activeMenuItem('/document/approve')}
+                  href="/document/approve/search"
+                >
                   <GrDocumentTime />
                   결재 대기 목록
-                </a>
+                </Link>
               </Menu.Item>
               <Menu.Item></Menu.Item>
               <Menu.Title>
