@@ -156,7 +156,7 @@ function App({ Component, pageProps }: AppProps) {
         onClickOverlay={toggleVisible}
       >
         <div className="h-full relative">
-          <Navbar className="bg-base-100 shadow-sm sticky top-0 z-10">
+          <Navbar className="bg-base-100 shadow-sm sticky top-0">
             <Navbar.Start className="flex-none lg:hidden">
               <div className="flex-none lg:hidden">
                 <Button shape="square" color="ghost" onClick={toggleVisible}>

@@ -22,7 +22,7 @@ import { BsFileArrowUp } from 'react-icons/bs';
 
 // datepicker
 import Datepicker from 'react-tailwindcss-datepicker';
-import DocumentTable from '@/component/DocumentTable';
+import DocumentTable from '@/components/DocumentTable';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';

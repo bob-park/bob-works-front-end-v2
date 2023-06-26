@@ -28,7 +28,7 @@ import { documentActions } from '@/store/document';
 import { PaginationParams } from '@/store/types';
 
 // component
-import DocumentTable from '@/component/DocumentTable';
+import DocumentTable from '@/components/DocumentTable';
 
 // utils
 import { parseDocumentType, parseDocumentStatus } from '@/utils/ParseUtils';
@@ -37,7 +37,7 @@ import {
   DocumentsStatus,
   DocumentsType,
 } from '@/store/document/types';
-import DocumentPagination from '@/component/DocumentPagination';
+import DocumentPagination from '@/components/DocumentPagination';
 import { getTotalPageCount } from '@/utils/paginationUtils';
 
 type SelectValue = {

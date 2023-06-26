@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 // store
 import { documentActions } from '@/store/document';
 import { DocumentsStatus } from '@/store/document/types';
-import VacationDocument from '@/component/document/VacationDocument';
+import VacationDocument from '@/components/document/VacationDocument';
 
 // utils
 import html2canvas from 'html2canvas';
