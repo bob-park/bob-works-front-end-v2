@@ -60,13 +60,7 @@ export default function VacationDocument({
   return (
     <div
       id="vacationDocument"
-      className="relative"
-      style={{
-        width: '996px',
-        // height: '1409px',
-        margin: '20px',
-        padding: '90px 120px',
-      }}
+      className="relative w-[996px] m-[20px] px-10 py-5"
     >
       {document.status === 'CANCEL' && (
         <div className="absolute" style={{ top: '500px', left: '300px' }}>
@@ -148,15 +142,12 @@ export default function VacationDocument({
         </div>
         <div className="">
           <div className="flex justify-start">
-            <div
-              className="flex-none w-[128px] text-xl text-right"
-              style={{ marginLeft: '34px' }}
-            >
+            <div className="flex-none w-[128px] text-xl text-right mr-10">
               휴 가 구 분 :
             </div>
-            <div className="flex-initial w-full" style={{ marginLeft: '38px' }}>
+            <div className="flex-initial w-full ml-10">
               <div className="flex justify-start gap-2 w-full">
-                <div className="flex-none w-[128px] text-xl font-semibold">
+                <div className="flex-none w-[135px] text-xl font-semibold">
                   <span>
                     {parseType(
                       document.vacationType,
@@ -196,8 +187,8 @@ export default function VacationDocument({
           </h3>
         </div>
 
-        <div className="text-right text-xl tracking-widest mt-28">
-          <div className="inline-block w-32 mr-10">신 청 일 :</div>
+        <div className="text-right text-xl tracking-widest mt-10">
+          <div className="inline-block w-32 mr-3">신 청 일 :</div>
           <div className="inline-block w-64">
             {formatDate(document.createdDate, 'yyyy 년  MM 월  dd 일 ')}
           </div>
