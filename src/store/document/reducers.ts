@@ -2,6 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { ExceptionHandle, Pageable, PaginationParams } from '@/store/types';
 import {
   AddVacationRequest,
+  DocumentApproval,
   Documents,
   DocumentsState,
   DocumentsStatus,
@@ -9,6 +10,7 @@ import {
   VacationDocumentDetail,
   VacationType,
 } from './types';
+import { ApprovalLine } from '@/components/document/ApprovalLines';
 
 const reducers = {
   // get document type
@@ -104,6 +106,29 @@ const reducers = {
     state.isLoading = false;
   },
   failureCancelDocument: (state: DocumentsState) => {
+    state.isLoading = false;
+  },
+  // get approval document
+  requestApprovalDocuments: (
+    state: DocumentsState,
+    action: PayloadAction<{
+      params: PaginationParams;
+      exceptionHandle: ExceptionHandle;
+    }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successApprovalDocuments: (
+    state: DocumentsState,
+    action: PayloadAction<Pageable<DocumentApproval> | undefined>,
+  ) => {
+    state.isLoading = false;
+
+    if (action.payload) {
+      state.approvalList = action.payload;
+    }
+  },
+  failureApprovalDocuments: (state: DocumentsState) => {
     state.isLoading = false;
   },
 };

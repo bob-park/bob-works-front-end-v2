@@ -4,7 +4,12 @@ import { getCall, postCall, deleteCall } from '@/utils/common';
 
 import { userActions } from '@/store/user';
 import { documentActions } from '.';
-import { Documents, DocumentsType, VacationDocumentDetail } from './types';
+import {
+  DocumentApproval,
+  Documents,
+  DocumentsType,
+  VacationDocumentDetail,
+} from './types';
 import { Pageable } from '../types';
 
 const { removeAuthentication } = userActions;
@@ -29,6 +34,10 @@ const {
   requestCancelDocument,
   successCancelDocument,
   failureCancelDocument,
+  // get approval documents
+  requestApprovalDocuments,
+  successApprovalDocuments,
+  failureApprovalDocuments,
 } = documentActions;
 
 // get document type
@@ -181,6 +190,36 @@ function* watchCancelDocument() {
   yield takeLatest(requestCancelDocument, callCancelDocument);
 }
 
+//  get approval documents
+function* callgetApprovalDocuments(
+  action: ReturnType<typeof requestApprovalDocuments>,
+) {
+  const { params, exceptionHandle } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<Pageable<DocumentApproval>> = yield call(
+    getCall,
+    `/api/approval/search`,
+    params,
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successApprovalDocuments());
+  } else {
+    yield put(failureApprovalDocuments());
+
+    if (response.status === 401) {
+      yield put(removeAuthentication());
+
+      handleAuthError && handleAuthError();
+    }
+  }
+}
+
+function* watchGetApprovalDocuments() {
+  yield takeLatest(requestApprovalDocuments, callgetApprovalDocuments);
+}
+
 export default function* documentSagas() {
   yield all([
     fork(watchRequestGetDocumentType),
@@ -188,5 +227,6 @@ export default function* documentSagas() {
     fork(watchRequestSearchDocument),
     fork(watchRequestGetVacationDocument),
     fork(watchCancelDocument),
+    fork(watchGetApprovalDocuments),
   ]);
 }

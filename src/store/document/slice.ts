@@ -15,6 +15,14 @@ const initialState: DocumentsState = {
     },
   },
   vacationDetail: {},
+  approvalList: {
+    content: [],
+    total: 0,
+    pageable: {
+      page: 0,
+      size: 0,
+    },
+  },
 };
 
 export default createSlice({
