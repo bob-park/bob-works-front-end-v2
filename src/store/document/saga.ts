@@ -204,7 +204,7 @@ function* callgetApprovalDocuments(
   );
 
   if (response.state === 'SUCCESS') {
-    yield put(successApprovalDocuments());
+    yield put(successApprovalDocuments(response.data));
   } else {
     yield put(failureApprovalDocuments());
 

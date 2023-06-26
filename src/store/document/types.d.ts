@@ -35,7 +35,7 @@ export type Documents = {
 };
 export type DocumentApproval = {
   id: nubmer;
-  lineId: number;
+  document: Documents;
   status: DocumentsState;
   approvedDateTime?: Date;
   reason?: string;
