@@ -151,6 +151,9 @@ function App({ Component, pageProps }: AppProps) {
                 <a>
                   <MdOutlineHolidayVillage />
                   휴일 근무 보고서 신청
+                  <Badge size="sm" color="secondary">
+                    준비중
+                  </Badge>
                 </a>
               </Menu.Item>
             </Menu>
@@ -193,16 +196,25 @@ function App({ Component, pageProps }: AppProps) {
                 <Dropdown.Menu className="w-48 bg-base-100 shadow-xl ">
                   <Dropdown.Item>
                     <GrNotification />
-                    공지 <Badge color="primary">new</Badge>
+                    공지
+                    <Badge size="sm" color="secondary">
+                      준비중
+                    </Badge>
                   </Dropdown.Item>
                   <hr />
                   <Dropdown.Item>
                     <CgProfile />
                     프로필
+                    <Badge size="sm" color="secondary">
+                      준비중
+                    </Badge>
                   </Dropdown.Item>
                   <Dropdown.Item>
                     <AiOutlineSetting />
                     설정
+                    <Badge size="sm" color="secondary">
+                      준비중
+                    </Badge>
                   </Dropdown.Item>
                   <hr />
                   <Dropdown.Item onClick={handleLogout}>
