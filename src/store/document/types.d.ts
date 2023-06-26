@@ -8,6 +8,7 @@ export type DocumentsState = {
   pageable: Pageable<Documents>;
   vacationDetail: VacationDocumentDetail;
   approvalList: Pageable<DocumentApproval>;
+  approvalDetail?: DocumentApproval;
 };
 
 export type DocumentsType = {

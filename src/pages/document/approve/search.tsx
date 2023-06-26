@@ -26,7 +26,7 @@ import DocumentTable from '@/components/DocumentTable';
 import { parseDocumentType, parseDocumentStatus } from '@/utils/ParseUtils';
 import DocumentPagination from '@/components/DocumentPagination';
 import { getTotalPageCount } from '@/utils/paginationUtils';
-import { DocumentsStatus } from '@/store/document/types';
+import { DocumentType, DocumentsStatus } from '@/store/document/types';
 
 type SelectValue = {
   id: string;
@@ -151,6 +151,12 @@ export default function ApproveSearch() {
     );
   };
 
+  const handleMoveDetail = (id: number, type: DocumentType) => {
+    const moveUri = `/document/approve/${type.toLowerCase()}?approvalId=${id}`;
+
+    router.push(moveUri);
+  };
+
   return (
     <main className="w-full h-full">
       <div className="grid grid-cols-1 gap-8"></div>
@@ -226,7 +232,7 @@ export default function ApproveSearch() {
             firstCheckbox
             headers={headers}
             dataList={dataList}
-            // onRowClick={handleMoveDetail}
+            onRowClick={handleMoveDetail}
           />
         </div>
 

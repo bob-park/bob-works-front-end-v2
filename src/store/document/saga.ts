@@ -38,6 +38,10 @@ const {
   requestApprovalDocuments,
   successApprovalDocuments,
   failureApprovalDocuments,
+  // get approval document
+  requestApprovalDocument,
+  successApprovalDocument,
+  failureApprovalDocument,
 } = documentActions;
 
 // get document type
@@ -220,6 +224,36 @@ function* watchGetApprovalDocuments() {
   yield takeLatest(requestApprovalDocuments, callgetApprovalDocuments);
 }
 
+//  get approval document
+function* callgetApprovalDocument(
+  action: ReturnType<typeof requestApprovalDocument>,
+) {
+  const { approvalId, exceptionHandle } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<DocumentApproval> = yield call(
+    getCall,
+    `/api/document/approval/${approvalId}`,
+    null,
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successApprovalDocument(response.data));
+  } else {
+    yield put(failureApprovalDocument());
+
+    if (response.status === 401) {
+      yield put(removeAuthentication());
+
+      handleAuthError && handleAuthError();
+    }
+  }
+}
+
+function* watchGetApprovalDocument() {
+  yield takeLatest(requestApprovalDocument, callgetApprovalDocument);
+}
+
 export default function* documentSagas() {
   yield all([
     fork(watchRequestGetDocumentType),
@@ -228,5 +262,6 @@ export default function* documentSagas() {
     fork(watchRequestGetVacationDocument),
     fork(watchCancelDocument),
     fork(watchGetApprovalDocuments),
+    fork(watchGetApprovalDocument),
   ]);
 }

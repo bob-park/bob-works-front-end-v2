@@ -82,6 +82,7 @@ export default function DocumentTable({
                 <Checkbox
                   key={`${head.id}_${data.id}`}
                   checked={checkedList.some((item) => item === data.id)}
+                  onClick={(e) => e.stopPropagation()}
                   onChange={(e) => handleChecked(e, data.id)}
                 />
               ) : (
