@@ -23,6 +23,10 @@ import { format } from 'date-fns';
 // hooks
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 
+// store
+import { documentActions } from '@/store/document';
+import { PaginationParams } from '@/store/types';
+
 // component
 import DocumentTable from '@/components/DocumentTable';
 
@@ -32,6 +36,8 @@ type SelectValue = {
   id: string;
   name: string;
 };
+
+const { requestApprovalDocuments } = documentActions;
 
 const documentStatus: SelectValue[] = [
   {
@@ -70,6 +76,17 @@ export default function ApproveSearch() {
     (state) => state.document,
   );
 
+  // state
+  const [page, setPage] = useState<PaginationParams>({
+    size: 10,
+    page: 0,
+  });
+
+  // useEffect
+  useEffect(() => {
+    handleSearch(page);
+  }, [page]);
+
   // handle
   const handleLogout = () => {
     router.push('/api/logout');
@@ -78,6 +95,18 @@ export default function ApproveSearch() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
+  const handleSearch = (params: PaginationParams) => {
+    dispatch(
+      requestApprovalDocuments({
+        params,
+        exceptionHandle: {
+          handleAuthError: handleLogout,
+        },
+      }),
+    );
+  };
+
   return (
     <main className="w-full h-full">
       <div className="grid grid-cols-1 gap-8"></div>

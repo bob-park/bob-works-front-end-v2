@@ -9,14 +9,7 @@ import { BiSearch } from 'react-icons/bi';
 import { GrPowerCycle } from 'react-icons/gr';
 
 // daisyui
-import {
-  Breadcrumbs,
-  Form,
-  Card,
-  Select,
-  Button,
-  Pagination,
-} from 'react-daisyui';
+import { Form, Select, Button } from 'react-daisyui';
 
 import { format } from 'date-fns';
 
@@ -180,8 +173,8 @@ export default function DocumentList() {
       {/* contents */}
       <div className="grid grid-cols-1 gap-8">
         {/* 검색 조건  */}
-        <Card className="bg-base-100">
-          <Card.Body>
+        <div className="bg-base-100 shadow-xl m-2 border p-10 rounded-lg">
+          <div>
             <Form onSubmit={handleSubmit}>
               <div className="grid grid-cols-5 gap-10">
                 <div className="col-span-1 text-center pt-2">
@@ -232,8 +225,8 @@ export default function DocumentList() {
                 </div>
               </div>
             </Form>
-          </Card.Body>
-        </Card>
+          </div>
+        </div>
 
         <div>
           <div>
@@ -241,14 +234,14 @@ export default function DocumentList() {
           </div>
         </div>
 
-        <Card className="bg-base-100 overflow-auto">
+        <div className="bg-base-100 shadow-xl overflow-auto border rounded-xl">
           <DocumentTable
             firstCheckbox
             headers={headers}
             dataList={dataList}
             onRowClick={handleMoveDetail}
           />
-        </Card>
+        </div>
 
         <div className="flex justify-center">
           <DocumentPagination

@@ -53,8 +53,8 @@ export default function DocumentTable({
   };
 
   return (
-    <Table className="rounded-box relative">
-      <Table.Head className="sticky top-0 bg-base-200">
+    <Table className="">
+      <Table.Head className="bg-base-200">
         {heads.map((head) =>
           head.checkbox ? (
             <Checkbox

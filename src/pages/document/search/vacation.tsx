@@ -10,7 +10,7 @@ import { FiPrinter, FiDownload } from 'react-icons/fi';
 import { MdOutlineCancel } from 'react-icons/md';
 
 // daisyui
-import { Button, Modal, Card } from 'react-daisyui';
+import { Button, Modal } from 'react-daisyui';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
@@ -168,17 +168,16 @@ export default function VacationDetail() {
           </div>
 
           {/* contents */}
-          <Card className="bg-base-100 shadow-sm overflow-auto -z-10">
-            <Card.Body>
-              <VacationDocument
-                document={documents}
-                lines={lines}
-                useAlternativeVacations={useAlternativeVacations}
-              />
-            </Card.Body>
-          </Card>
+          <div className="bg-base-100 shadow-lg overflow-auto border rounded-xl">
+            <VacationDocument
+              document={documents}
+              lines={lines}
+              useAlternativeVacations={useAlternativeVacations}
+            />
+          </div>
         </div>
       </div>
+
       {/* 취소 modal */}
       <Modal
         open={showConfirmCancel}

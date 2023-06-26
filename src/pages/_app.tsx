@@ -96,9 +96,10 @@ function App({ Component, pageProps }: AppProps) {
 
       <Drawer
         className="lg:drawer-open h-screen"
+        sideClassName="drawer-side z-40"
         side={
           <aside className="w-80 h-full bg-base-100 lg:fixed">
-            <div className="bg-opacity-90 px-4 py-2 backdrop-blur flex justify-center bg-base-100 shadow-sm h-[78px]">
+            <div className="bg-base-100 sticky top-0 z-20 hidden items-center gap-2 bg-opacity-90 px-4 py-2 backdrop-blur lg:flex ">
               <a className="btn btn-ghost normal-case px-2 mx-2 text-2xl font-bold">
                 Bob Works
               </a>
@@ -158,8 +159,8 @@ function App({ Component, pageProps }: AppProps) {
         open={visible}
         onClickOverlay={toggleVisible}
       >
-        <div className="h-full relative">
-          <Navbar className="bg-base-100 shadow-sm sticky top-0">
+        <div className="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm">
+          <Navbar className="">
             <Navbar.Start className="flex-none lg:hidden">
               <div className="flex-none lg:hidden">
                 <Button shape="square" color="ghost" onClick={toggleVisible}>
@@ -189,7 +190,7 @@ function App({ Component, pageProps }: AppProps) {
               </div>
               <Dropdown className="mr-10" hover end>
                 <Avatar src={user?.avatar} size="sm" shape="circle" online />
-                <Dropdown.Menu className="w-48 bg-base-100 shadow-xl">
+                <Dropdown.Menu className="w-48 bg-base-100 shadow-xl ">
                   <Dropdown.Item>
                     <GrNotification />
                     공지 <Badge color="primary">new</Badge>
@@ -212,22 +213,23 @@ function App({ Component, pageProps }: AppProps) {
               </Dropdown>
             </Navbar.End>
           </Navbar>
-          <div className="flex items-center justify-center m-10 min-w-[746px] max-w-[1150px] lg:ml-[350px]">
-            <Component {...pageProps} />
-          </div>
+        </div>
 
-          <div className="fixed bottom-10 right-10">
-            <Tooltip message="무엇을 도와드릴까요?">
-              <Avatar
-                className=""
-                size="sm"
-                shape="circle"
-                src="/customer_service_center.png"
-                border
-                color="ghost"
-              />
-            </Tooltip>
-          </div>
+        <div className="flex items-center justify-center m-10 min-w-[746px] max-w-[1036px] lg:ml-[350px]">
+          <Component {...pageProps} />
+        </div>
+
+        <div className="fixed bottom-10 right-10">
+          <Tooltip message="무엇을 도와드릴까요?">
+            <Avatar
+              className=""
+              size="sm"
+              shape="circle"
+              src="/customer_service_center.png"
+              border
+              color="ghost"
+            />
+          </Tooltip>
         </div>
       </Drawer>
     </>

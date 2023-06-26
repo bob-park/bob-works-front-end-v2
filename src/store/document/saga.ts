@@ -199,7 +199,7 @@ function* callgetApprovalDocuments(
 
   const response: ApiResponse<Pageable<DocumentApproval>> = yield call(
     getCall,
-    `/api/approval/search`,
+    `/api/document/approval/search`,
     params,
   );
 
