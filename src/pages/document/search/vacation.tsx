@@ -50,6 +50,7 @@ export default function VacationDetail() {
 
   // state
   const [showConfirmCancel, setShowConfirmCancel] = useState<boolean>(false);
+  const [loaddingPdf, setLoaddingPdf] = useState<boolean>(false);
 
   // useEffect
   useEffect(() => {
@@ -87,11 +88,16 @@ export default function VacationDetail() {
     if (!docElement) {
       return;
     }
+
+    setLoaddingPdf(true);
+
     html2canvas(docElement).then((canvas) => {
       const pdf = new jsPDF('p', 'mm', 'a4');
       pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
       pdf.save(`${documents.id}_${documents.writer.name}.pdf`);
     });
+
+    setLoaddingPdf(false);
   };
 
   const handleCancel = () => {
@@ -140,9 +146,13 @@ export default function VacationDetail() {
 
               <Button
                 onClick={handleCapture}
-                disabled={checkDisabledBtn(documents?.status)}
+                disabled={checkDisabledBtn(documents?.status) || loaddingPdf}
               >
-                <FiDownload className="mr-2 h-5 w-5" />
+                {loaddingPdf ? (
+                  <span className="loading loading-spinner loading-lg" />
+                ) : (
+                  <FiDownload className="mr-2 h-5 w-5" />
+                )}
                 PDF 다운로드
               </Button>
 
@@ -158,7 +168,7 @@ export default function VacationDetail() {
           </div>
 
           {/* contents */}
-          <Card className="bg-base-100 shadow-sm overflow-auto">
+          <Card className="bg-base-100 shadow-sm overflow-auto -z-10">
             <Card.Body>
               <VacationDocument
                 document={documents}
