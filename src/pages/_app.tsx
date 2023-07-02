@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 
 // store
 import { wrapper } from '@/store/store';
+import { commonActions } from '@/store/common';
 import { userActions } from '@/store/user';
 
 // react-icon
@@ -25,6 +26,7 @@ import {
 import { MdOutlineHolidayVillage } from 'react-icons/md';
 import { AiOutlineUnorderedList, AiOutlineSetting } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
+import { BsInfoCircle } from 'react-icons/bs';
 
 // daisyui
 import {
@@ -36,9 +38,12 @@ import {
   Avatar,
   Drawer,
   Tooltip,
+  Toast,
+  Alert,
 } from 'react-daisyui';
 
 // user actions
+const { readAlert } = commonActions;
 const { requestGetUser } = userActions;
 
 function App({ Component, pageProps }: AppProps) {
@@ -49,6 +54,7 @@ function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   // store
+  const { alerts } = useAppSelector((state) => state.common);
   const { isLoading, isLoggedIn, user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
@@ -86,6 +92,10 @@ function App({ Component, pageProps }: AppProps) {
 
   const handleLogout = () => {
     router.push('/api/logout');
+  };
+
+  const handleReadAlert = (id: number) => {
+    dispatch(readAlert(id));
   };
 
   return (
@@ -249,6 +259,20 @@ function App({ Component, pageProps }: AppProps) {
           </Tooltip>
         </div>
       </Drawer>
+      <Toast className="mt-20 mr-5" horizontal="end" vertical="top">
+        {alerts.map((item, index) => (
+          <div key={`system_alert_id_${index}`} className="alert shadow-lg">
+            <BsInfoCircle className="stroke-info shrink-0 w-6 h-6" />
+            <div>
+              <h3>{item.message}</h3>
+            </div>
+
+            <Button size="sm" onClick={() => handleReadAlert(index)}>
+              See
+            </Button>
+          </div>
+        ))}
+      </Toast>
     </>
   );
 }

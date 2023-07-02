@@ -3,7 +3,9 @@ type CommonState = {
 };
 
 type SystemAlert = {
-  level: 'info' | 'error' | 'warn';
+  level: SystemAlertLevel;
   message: string;
   createAt: Date;
 };
+
+type SystemAlertLevel = 'info' | 'error' | 'warn';
