@@ -95,9 +95,9 @@ export default function VacationDetail() {
       const pdf = new jsPDF('p', 'mm', 'a4');
       pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
       pdf.save(`${documents.id}_${documents.writer.name}.pdf`);
-    });
 
-    setLoaddingPdf(false);
+      setLoaddingPdf(false);
+    });
   };
 
   const handleCancel = () => {
