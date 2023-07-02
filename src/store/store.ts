@@ -4,6 +4,9 @@ import { createWrapper } from 'next-redux-wrapper';
 
 import rootSaga from './saga';
 
+// common
+import { COMMON, commonReducer } from './common';
+
 // user
 import { USER, userReducer } from './user';
 
@@ -13,6 +16,7 @@ import { DOCUMENT, documentReducer } from './document';
 const rootReducer = combineReducers({
   [USER]: userReducer,
   [DOCUMENT]: documentReducer,
+  [COMMON]: commonReducer,
 });
 
 function rootStore() {

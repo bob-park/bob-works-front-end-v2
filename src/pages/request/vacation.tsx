@@ -406,7 +406,6 @@ export default function VacationRequest() {
           />
         </Modal.Body>
         <Modal.Actions>
-          {/* <Button onClick={() => setOpenSelectAlternative(false)}>취소</Button> */}
           <Button
             color="primary"
             onClick={() => setOpenSelectAlternative(false)}
