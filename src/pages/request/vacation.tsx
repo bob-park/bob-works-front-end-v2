@@ -28,12 +28,11 @@ import DocumentTable from '@/components/DocumentTable';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 
 // store
+import { commonActions } from '@/store/common';
 import { userActions } from '@/store/user';
 import { documentActions } from '@/store/document';
 import {
   AddVacationRequest,
-  DocumentType,
-  DocumentsType,
   VacationSubType,
   VacationType,
 } from '@/store/document/types';
@@ -49,6 +48,7 @@ type VacationDate = {
   endDate: Date;
 };
 
+const { addAlert } = commonActions;
 const { requestGetUsableAlternativeVacation } = userActions;
 const { requestGetDocumentType, requestAddVacationDocument } = documentActions;
 
@@ -150,6 +150,10 @@ export default function VacationRequest() {
       selectVacationType.id === 'ALTERNATIVE' &&
       selectAlternativeList.length === 0
     ) {
+      handleAddSystemAlert(
+        'error',
+        '대체휴가인 경우 사용 가능한 대체휴가를 선택해야합니다.',
+      );
       return;
     }
 
@@ -205,6 +209,16 @@ export default function VacationRequest() {
     setDateValue({ startDate: new Date(), endDate: new Date() });
     setReason('개인 사유');
     setSelectAlternativeList([]);
+  };
+
+  const handleAddSystemAlert = (level: SystemAlertLevel, message: string) => {
+    dispatch(
+      addAlert({
+        level,
+        message,
+        createAt: new Date(),
+      }),
+    );
   };
 
   return (

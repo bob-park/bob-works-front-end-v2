@@ -1,4 +1,11 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios from 'axios';
+import { put } from 'redux-saga/effects';
+
+import { commonActions } from '@/store/common';
+import { userActions } from '@/store/user';
+
+const { addAlert } = commonActions;
+const { removeAuthentication } = userActions;
 
 export const client = axios.create({
   withCredentials: true,
@@ -107,4 +114,28 @@ export async function deleteCall<T>(url: string): Promise<ApiResponse<T>> {
         },
       };
     });
+}
+
+export function* failureActionProceed(
+  response: ApiResponse<any>,
+  failureAction?: any,
+  handleAuthError?: () => void,
+) {
+  yield failureAction && put(failureAction());
+
+  yield put(
+    addAlert({
+      level: 'error',
+      message:
+        response.error?.message ||
+        '시스템에 오류가 있습니다. 잠시 후 시도해주세요.',
+      createAt: new Date(),
+    }),
+  );
+
+  if (response.status === 401) {
+    yield put(removeAuthentication());
+
+    handleAuthError && handleAuthError();
+  }
 }

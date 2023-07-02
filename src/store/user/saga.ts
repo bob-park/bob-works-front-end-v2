@@ -1,6 +1,6 @@
 import { call, all, takeLatest, fork, put, delay } from 'redux-saga/effects';
 
-import { getCall } from '@/utils/common';
+import { getCall, failureActionProceed } from '@/utils/common';
 import { userActions } from '.';
 
 const {
@@ -22,11 +22,7 @@ function* callGetUser(action: ReturnType<typeof requestGetUser>) {
   if (response.state === 'SUCCESS') {
     yield put(successGetUser(response.data));
   } else {
-    yield put(removeAuthentication());
-
-    if (response.status === 401) {
-      exceptionHandle && exceptionHandle();
-    }
+    yield failureActionProceed(response, null, exceptionHandle);
   }
 
   // yield delay(2_000);
@@ -50,11 +46,11 @@ function* callGetUsableAternativeVacation(
   if (response.state === 'SUCCESS') {
     yield put(successGetUsableAlternativeVacation(response.data || []));
   } else {
-    if (response.status === 401) {
-      yield put(removeAuthentication());
-
-      handleAuthException && handleAuthException();
-    }
+    yield failureActionProceed(
+      response,
+      failureGetUsableAlternativeVacation,
+      handleAuthException,
+    );
   }
 }
 

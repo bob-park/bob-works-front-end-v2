@@ -3,13 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import reducers from './reducers';
 
 const initialState: CommonState = {
-  alerts: [
-    {
-      level: 'info',
-      message: 'message',
-      createAt: new Date(),
-    },
-  ],
+  alerts: [],
 };
 
 export default createSlice({

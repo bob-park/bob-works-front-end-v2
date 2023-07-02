@@ -272,9 +272,12 @@ function App({ Component, pageProps }: AppProps) {
           </Tooltip>
         </div>
       </Drawer>
-      <Toast className="mt-20 mr-5 w-2/5" horizontal="end" vertical="top">
+      <Toast className="mt-20 mr-5" horizontal="end" vertical="top">
         {alerts.map((item, index) => (
-          <div key={`system_alert_id_${index}`} className={`alert shadow-2xl `}>
+          <div
+            key={`system_alert_id_${index}`}
+            className="alert shadow-2xl bg-base-200"
+          >
             {getSystemAlertIcon(item.level)}
             <div>
               <h3>{item.message}</h3>

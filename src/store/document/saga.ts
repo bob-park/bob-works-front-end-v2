@@ -1,7 +1,14 @@
 import { call, all, takeLatest, fork, put, delay } from 'redux-saga/effects';
 
-import { getCall, postCall, deleteCall, putCall } from '@/utils/common';
+import {
+  getCall,
+  postCall,
+  deleteCall,
+  putCall,
+  failureActionProceed,
+} from '@/utils/common';
 
+import { commonActions } from '@/store/common';
 import { userActions } from '@/store/user';
 import { documentActions } from '.';
 import {
@@ -12,6 +19,7 @@ import {
 } from './types';
 import { Pageable } from '../types';
 
+const { addAlert } = commonActions;
 const { removeAuthentication } = userActions;
 const {
   // get document type
@@ -62,13 +70,11 @@ function* callGetDocumentType(
   if (apiResponse.state === 'SUCCESS') {
     yield put(successGetdocumentType(apiResponse.data || []));
   } else {
-    yield put(failureGetDocumentType());
-
-    if (apiResponse.status === 401) {
-      yield put(removeAuthentication());
-
-      handleAuthError && handleAuthError();
-    }
+    yield failureActionProceed(
+      apiResponse,
+      failureGetDocumentType,
+      handleAuthError,
+    );
   }
 }
 
@@ -91,15 +97,21 @@ function* callAddVacationDocument(
   if (response.state === 'SUCCESS') {
     yield put(successAddVacationDocumnet(response.data));
 
+    yield put(
+      addAlert({
+        level: 'info',
+        message: '휴가계가 신청되었습니다.',
+        createAt: new Date(),
+      }),
+    );
+
     afterHandle && afterHandle();
   } else {
-    yield put(failureAddVacationDocument());
-
-    if (response.status === 401) {
-      yield put(removeAuthentication());
-
-      handleAuthError && handleAuthError();
-    }
+    yield failureActionProceed(
+      response,
+      failureAddVacationDocument,
+      handleAuthError,
+    );
   }
 }
 
@@ -120,13 +132,11 @@ function* callSearchDocument(action: ReturnType<typeof requestSearchDocument>) {
   if (response.state === 'SUCCESS') {
     yield put(successSearchDocument(response.data));
   } else {
-    yield put(failureSearchDocument());
-
-    if (response.status === 401) {
-      yield put(removeAuthentication());
-
-      handleAuthError && handleAuthError();
-    }
+    yield failureActionProceed(
+      response,
+      failureSearchDocument,
+      handleAuthError,
+    );
   }
 }
 
@@ -155,13 +165,11 @@ function* callGetVacationDocument(
 
     yield put(successGetVacationDocument(response.data));
   } else {
-    yield put(failureGetVacationDocument());
-
-    if (response.status === 401) {
-      yield put(removeAuthentication());
-
-      handleAuthError && handleAuthError();
-    }
+    yield failureActionProceed(
+      response,
+      failureGetVacationDocument,
+      handleAuthError,
+    );
   }
 }
 
@@ -182,15 +190,21 @@ function* callCancelDocument(action: ReturnType<typeof requestCancelDocument>) {
   if (response.state === 'SUCCESS') {
     yield put(successCancelDocument());
 
+    yield put(
+      addAlert({
+        level: 'info',
+        message: '휴가계가 취소되었습니다.',
+        createAt: new Date(),
+      }),
+    );
+
     afterHandle && afterHandle();
   } else {
-    yield put(failureCancelDocument());
-
-    if (response.status === 401) {
-      yield put(removeAuthentication());
-
-      handleAuthError && handleAuthError();
-    }
+    yield failureActionProceed(
+      response,
+      failureCancelDocument,
+      handleAuthError,
+    );
   }
 }
 
@@ -214,13 +228,11 @@ function* callgetApprovalDocuments(
   if (response.state === 'SUCCESS') {
     yield put(successApprovalDocuments(response.data));
   } else {
-    yield put(failureApprovalDocuments());
-
-    if (response.status === 401) {
-      yield put(removeAuthentication());
-
-      handleAuthError && handleAuthError();
-    }
+    yield failureActionProceed(
+      response,
+      failureApprovalDocuments,
+      handleAuthError,
+    );
   }
 }
 
@@ -244,13 +256,11 @@ function* callgetApprovalDocument(
   if (response.state === 'SUCCESS') {
     yield put(successApprovalDocument(response.data));
   } else {
-    yield put(failureApprovalDocument());
-
-    if (response.status === 401) {
-      yield put(removeAuthentication());
-
-      handleAuthError && handleAuthError();
-    }
+    yield failureActionProceed(
+      response,
+      failureApprovalDocument,
+      handleAuthError,
+    );
   }
 }
 
@@ -274,15 +284,23 @@ function* callProceedApprovalDocument(
   if (response.state === 'SUCCESS') {
     yield put(successProceedApprovalDocument());
 
+    yield put(
+      addAlert({
+        level: 'info',
+        message: `문서가 결재 ${
+          body.status === 'APPROVE' ? '승인' : '반려'
+        } 처리되었습니다.`,
+        createAt: new Date(),
+      }),
+    );
+
     afterHandle && afterHandle();
   } else {
-    yield put(failureProceedApprovalDocument());
-
-    if (response.status === 401) {
-      yield put(removeAuthentication());
-
-      handleAuthError && handleAuthError();
-    }
+    yield failureActionProceed(
+      response,
+      failureProceedApprovalDocument,
+      handleAuthError,
+    );
   }
 }
 
