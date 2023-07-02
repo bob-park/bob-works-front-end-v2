@@ -99,7 +99,7 @@ function App({ Component, pageProps }: AppProps) {
         sideClassName="drawer-side z-40"
         side={
           <aside className="w-80 h-full bg-base-100 lg:fixed">
-            <div className="bg-base-100 sticky top-0 z-20 hidden items-center gap-2 bg-opacity-90 px-4 py-2 backdrop-blur lg:flex ">
+            <div className="bg-base-100 sticky top-0  items-center gap-2 bg-opacity-90 px-4 py-2 backdrop-blur lg:flex ">
               <a className="btn btn-ghost normal-case px-2 mx-2 text-2xl font-bold">
                 Bob Works
               </a>

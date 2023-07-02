@@ -264,9 +264,10 @@ export default function VacationRequest() {
                 <div className="col-span-1 text-center pt-2">
                   <span className="">휴가일</span>
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-3">
                   <Datepicker
                     placeholder="날짜 선택"
+                    inputClassName="input w-full input-primary input-bordered focus:outline-offset-0 z-100"
                     minDate={new Date(new Date().getFullYear(), 1, 1)}
                     maxDate={new Date(new Date().getFullYear(), 11, 31)}
                     value={dateValue}
