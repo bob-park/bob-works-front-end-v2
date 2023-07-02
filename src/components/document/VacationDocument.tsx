@@ -60,7 +60,7 @@ export default function VacationDocument({
   return (
     <div
       id="vacationDocument"
-      className="relative w-[996px] m-[20px] px-10 py-5"
+      className="relative w-[996px] m-[20px] px-10 py-5 text-black bg-white"
     >
       {document.status === 'CANCEL' && (
         <div className="absolute" style={{ top: '500px', left: '300px' }}>
