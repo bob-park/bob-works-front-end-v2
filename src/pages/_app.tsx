@@ -27,6 +27,7 @@ import { MdOutlineHolidayVillage } from 'react-icons/md';
 import { AiOutlineUnorderedList, AiOutlineSetting } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
 import { BsInfoCircle } from 'react-icons/bs';
+import { VscError } from 'react-icons/vsc';
 
 // daisyui
 import {
@@ -45,6 +46,18 @@ import {
 // user actions
 const { readAlert } = commonActions;
 const { requestGetUser } = userActions;
+
+function getSystemAlertIcon(level: SystemAlertLevel) {
+  switch (level) {
+    case 'error':
+      return <VscError className="text-red-600 stroke-info shrink-0 w-6 h-6" />;
+
+    default:
+      return (
+        <BsInfoCircle className="text-sky-600 stroke-info shrink-0 w-6 h-6" />
+      );
+  }
+}
 
 function App({ Component, pageProps }: AppProps) {
   // state
@@ -259,15 +272,19 @@ function App({ Component, pageProps }: AppProps) {
           </Tooltip>
         </div>
       </Drawer>
-      <Toast className="mt-20 mr-5" horizontal="end" vertical="top">
+      <Toast className="mt-20 mr-5 w-2/5" horizontal="end" vertical="top">
         {alerts.map((item, index) => (
-          <div key={`system_alert_id_${index}`} className="alert shadow-lg">
-            <BsInfoCircle className="stroke-info shrink-0 w-6 h-6" />
+          <div key={`system_alert_id_${index}`} className={`alert shadow-2xl `}>
+            {getSystemAlertIcon(item.level)}
             <div>
               <h3>{item.message}</h3>
             </div>
 
-            <Button size="sm" onClick={() => handleReadAlert(index)}>
+            <Button
+              color="ghost"
+              size="sm"
+              onClick={() => handleReadAlert(index)}
+            >
               See
             </Button>
           </div>
