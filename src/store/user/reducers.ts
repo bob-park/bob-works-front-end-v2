@@ -47,6 +47,7 @@ const reducers = {
     state: UserState,
     action: PayloadAction<{
       formData: FormData;
+      handleAfter?: () => void;
       exceptionHandle: ExceptionHandle;
     }>,
   ) => {

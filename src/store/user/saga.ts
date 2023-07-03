@@ -82,13 +82,19 @@ function* watchGetUsableAlternativeVacation() {
 function* callUpdateUserAvatar(
   action: ReturnType<typeof requestUpdateUserAvatar>,
 ) {
-  const { formData, exceptionHandle } = action.payload;
+  const { formData, exceptionHandle, handleAfter } = action.payload;
   const { handleAuthError } = exceptionHandle;
 
-  const response: ApiResponse<User> = yield call(postCall, '/api/', formData);
+  const response: ApiResponse<User> = yield call(
+    postCall,
+    `/api/user/avatar`,
+    formData,
+  );
 
   if (response.state === 'SUCCESS') {
     yield put(successUpdateUserAvatar());
+
+    handleAfter && handleAfter();
   } else {
     yield failureActionProceed(
       response,

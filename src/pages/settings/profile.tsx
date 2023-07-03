@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 import { userActions } from '@/store/user';
 
 // user action
-const {} = userActions;
+const { requestUpdateUserAvatar } = userActions;
 
 export default function Profile() {
   // router
@@ -28,11 +28,18 @@ export default function Profile() {
   const { user } = useAppSelector((state) => state.user);
 
   // state
+  const [userAvatarSrc, setUserAvatarSrc] = useState<string>(
+    user?.avatar || '/default_avatar.jpg',
+  );
 
   // ref
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
   // handle
+  const handleLogout = () => {
+    router.push('/api/logout');
+  };
+
   const handleEditAvatar = () => {
     avatarInputRef.current?.click();
   };
@@ -51,6 +58,19 @@ export default function Profile() {
     const formData = new FormData();
 
     formData.append('avatar', avatarFile);
+
+    dispatch(
+      requestUpdateUserAvatar({
+        formData,
+        handleAfter: () => {
+          const newAvatarSrc = URL.createObjectURL(avatarFile);
+          setUserAvatarSrc(newAvatarSrc);
+        },
+        exceptionHandle: {
+          handleAuthError: handleLogout,
+        },
+      }),
+    );
   };
 
   return (
@@ -87,7 +107,7 @@ export default function Profile() {
           <div className="w-[256px] relative">
             <img
               className="w-[256px] h-[256px] border rounded-full"
-              src={user?.avatar}
+              src={userAvatarSrc}
             />
             <input
               type="file"
