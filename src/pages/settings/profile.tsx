@@ -119,10 +119,9 @@ export default function Profile() {
             <Button
               className="absolute bottom-0 border border-solid border-gray-300"
               animation
-              color="ghost"
               onClick={handleEditAvatar}
             >
-              <GrEdit />
+              <GrEdit className="w-5 h-5" />
               Edit
             </Button>
           </div>
