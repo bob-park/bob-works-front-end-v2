@@ -1,4 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
+import { ExceptionHandle } from '../types';
 
 const reducers = {
   requestGetUser: (
@@ -39,6 +40,23 @@ const reducers = {
   },
   failureGetUsableAlternativeVacation: (state: UserState) => {
     state.isLoading = false;
+  },
+
+  // update avatar
+  requestUpdateUserAvatar: (
+    state: UserState,
+    action: PayloadAction<{
+      formData: FormData;
+      exceptionHandle: ExceptionHandle;
+    }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successUpdateUserAvatar: (state: UserState) => {
+    state.isLoading = true;
+  },
+  failureUpdateUserAvatar: (state: UserState) => {
+    state.isLoading = true;
   },
 };
 

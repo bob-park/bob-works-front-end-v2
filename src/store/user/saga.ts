@@ -1,6 +1,19 @@
-import { call, all, takeLatest, fork, put, delay } from 'redux-saga/effects';
+import {
+  call,
+  all,
+  takeLatest,
+  fork,
+  put,
+  delay,
+  take,
+} from 'redux-saga/effects';
 
-import { getCall, failureActionProceed } from '@/utils/common';
+import {
+  getCall,
+  putCall,
+  failureActionProceed,
+  postCall,
+} from '@/utils/common';
 import { userActions } from '.';
 
 const {
@@ -12,6 +25,10 @@ const {
   requestGetUsableAlternativeVacation,
   successGetUsableAlternativeVacation,
   failureGetUsableAlternativeVacation,
+  // update user avatar
+  requestUpdateUserAvatar,
+  successUpdateUserAvatar,
+  failureUpdateUserAvatar,
 } = userActions;
 
 function* callGetUser(action: ReturnType<typeof requestGetUser>) {
@@ -61,6 +78,34 @@ function* watchGetUsableAlternativeVacation() {
   );
 }
 
+// update user avatar
+function* callUpdateUserAvatar(
+  action: ReturnType<typeof requestUpdateUserAvatar>,
+) {
+  const { formData, exceptionHandle } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<User> = yield call(postCall, '/api/', formData);
+
+  if (response.state === 'SUCCESS') {
+    yield put(successUpdateUserAvatar());
+  } else {
+    yield failureActionProceed(
+      response,
+      failureUpdateUserAvatar,
+      handleAuthError,
+    );
+  }
+}
+
+function* watchUpdateUserAvatar() {
+  yield takeLatest(requestUpdateUserAvatar, callUpdateUserAvatar);
+}
+
 export default function* userSagas() {
-  yield all([fork(watchLoggedIn), fork(watchGetUsableAlternativeVacation)]);
+  yield all([
+    fork(watchLoggedIn),
+    fork(watchGetUsableAlternativeVacation),
+    fork(watchUpdateUserAvatar),
+  ]);
 }
