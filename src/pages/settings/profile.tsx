@@ -35,6 +35,11 @@ export default function Profile() {
   // ref
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
+  // useEffect
+  useEffect(() => {
+    setUserAvatarSrc(user?.avatar || '/default_avatar.jpg');
+  }, [user]);
+
   // handle
   const handleLogout = () => {
     router.push('/api/logout');
