@@ -15,9 +15,11 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 
 // store
 import { userActions } from '@/store/user';
+import { commonActions } from '@/store/common';
 
-// user action
+// actions
 const { requestUpdateUserAvatar } = userActions;
+const { addAlert } = commonActions;
 
 export default function Profile() {
   // router
@@ -37,7 +39,7 @@ export default function Profile() {
 
   // useEffect
   useEffect(() => {
-    setUserAvatarSrc(user?.avatar || '/default_avatar.jpg');
+    user?.avatar && setUserAvatarSrc(user.avatar);
   }, [user]);
 
   // handle
@@ -70,6 +72,14 @@ export default function Profile() {
         handleAfter: () => {
           const newAvatarSrc = URL.createObjectURL(avatarFile);
           setUserAvatarSrc(newAvatarSrc);
+
+          dispatch(
+            addAlert({
+              level: 'info',
+              message: '사용자 아바타가 변경되었습니다. 추후 적용됩니다.',
+              createAt: new Date(),
+            }),
+          );
         },
         exceptionHandle: {
           handleAuthError: handleLogout,
