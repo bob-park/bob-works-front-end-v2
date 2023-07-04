@@ -249,13 +249,13 @@ function App({ Component, pageProps }: AppProps) {
                     </Link>
                   </li>
 
-                  <Dropdown.Item>
-                    <AiOutlineSetting />
-                    설정
-                    <Badge size="sm" color="secondary">
-                      준비중
-                    </Badge>
-                  </Dropdown.Item>
+                  <li>
+                    <Link href="/settings/users">
+                      <AiOutlineSetting />
+                      설정
+                    </Link>
+                  </li>
+
                   <hr />
                   <Dropdown.Item onClick={handleLogout}>
                     <LuLogOut />
