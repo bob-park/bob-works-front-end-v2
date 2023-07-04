@@ -68,10 +68,10 @@ function App({ Component, pageProps }: AppProps) {
 
   // store
   const { alerts } = useAppSelector((state) => state.common);
-  const { isLoading, isLoggedIn, user } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
-  // use effect
+  // useeffect
   useEffect(() => {
     if (user) {
       return;
@@ -85,6 +85,17 @@ function App({ Component, pageProps }: AppProps) {
     );
   }, []);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      alerts && handleReadAlert(0);
+    }, 5_000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [alerts]);
+
+  // handle
   const toggleVisible = () => {
     setVisible(!visible);
   };
