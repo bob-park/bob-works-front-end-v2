@@ -3,10 +3,19 @@ import { Stats } from 'react-daisyui';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
+import { GetServerSideProps } from 'next';
+
+// store
+import { wrapper } from '@/store/store';
+import { userActions } from '@/store/user';
+
+import axios from 'axios';
+
+const { requestGetUser } = userActions;
 
 const Stat = Stats.Stat;
 
-export default function Home() {
+function Home() {
   // store
   const { user } = useAppSelector((state) => state.user);
 
@@ -71,3 +80,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default Home;

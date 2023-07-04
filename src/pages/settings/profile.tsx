@@ -89,59 +89,57 @@ export default function Profile() {
   };
 
   return (
-    <>
-      <main className="grid grid-cols-3 gap-10 w-full h-full p-10 m-5">
-        {/* title */}
-        <div className="col-span-3">
-          <h1 className="text-xl font-semibold">프로필</h1>
-          <Divider />
-        </div>
-        <div className="col-span-2">
-          <div className="grid grid-cols-1 gap-10">
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">팀</span>
-              </label>
-              <Input value={user?.team.name} disabled />
-            </div>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">직급</span>
-              </label>
-              <Input value={user?.position?.name} disabled />
-            </div>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="label-text">이름</span>
-              </label>
-              <Input value={user?.name} disabled />
-            </div>
+    <main className="grid grid-cols-3 gap-10 w-full h-full p-10 m-5">
+      {/* title */}
+      <div className="col-span-3">
+        <h1 className="text-xl font-semibold">프로필</h1>
+        <Divider />
+      </div>
+      <div className="col-span-2">
+        <div className="grid grid-cols-1 gap-10">
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">팀</span>
+            </label>
+            <Input value={user?.team.name} disabled />
+          </div>
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">직급</span>
+            </label>
+            <Input value={user?.position?.name} disabled />
+          </div>
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">이름</span>
+            </label>
+            <Input value={user?.name} disabled />
           </div>
         </div>
-        <div className="col-span-1">
-          <div className="w-[256px] relative">
-            <img
-              className="w-[256px] h-[256px] border rounded-full"
-              src={userAvatarSrc}
-            />
-            <input
-              type="file"
-              hidden
-              ref={avatarInputRef}
-              accept=".png,.jpg"
-              onChange={handleAvatarChange}
-            />
-            <Button
-              className="absolute bottom-0 border border-solid border-gray-300"
-              animation
-              onClick={handleEditAvatar}
-            >
-              <GrEdit className="w-5 h-5" />
-              Edit
-            </Button>
-          </div>
+      </div>
+      <div className="col-span-1">
+        <div className="w-[256px] relative">
+          <img
+            className="w-[256px] h-[256px] border rounded-full"
+            src={userAvatarSrc}
+          />
+          <input
+            type="file"
+            hidden
+            ref={avatarInputRef}
+            accept=".png,.jpg"
+            onChange={handleAvatarChange}
+          />
+          <Button
+            className="absolute bottom-0 border border-solid border-gray-300"
+            animation
+            onClick={handleEditAvatar}
+          >
+            <GrEdit className="w-5 h-5" />
+            Edit
+          </Button>
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   );
 }

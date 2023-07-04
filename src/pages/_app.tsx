@@ -76,7 +76,6 @@ function App({ Component, pageProps }: AppProps) {
     if (user) {
       return;
     }
-
     dispatch(
       requestGetUser({
         exceptionHandle: () =>
@@ -87,7 +86,7 @@ function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      alerts && handleReadAlert(0);
+      alerts.length && handleReadAlert(0);
     }, 5_000);
 
     return () => {

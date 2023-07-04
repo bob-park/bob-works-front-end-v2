@@ -8,12 +8,9 @@ const { addAlert } = commonActions;
 const { removeAuthentication } = userActions;
 
 export const client = axios.create({
+  baseURL: process.env.CLIENT_SERVICE_PATH,
   withCredentials: true,
 });
-
-const config: RequestInit = {
-  credentials: 'include',
-};
 
 export async function getCall<T>(
   url: string,
