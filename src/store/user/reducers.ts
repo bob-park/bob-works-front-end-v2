@@ -54,10 +54,28 @@ const reducers = {
     state.isLoading = true;
   },
   successUpdateUserAvatar: (state: UserState) => {
-    state.isLoading = true;
+    state.isLoading = false;
   },
   failureUpdateUserAvatar: (state: UserState) => {
+    state.isLoading = false;
+  },
+  // update signature
+  requestUpdateSignature: (
+    state: UserState,
+    action: PayloadAction<{
+      id: number;
+      formData: FormData;
+      handleAfter?: () => void;
+      exceptionHandle: ExceptionHandle;
+    }>,
+  ) => {
     state.isLoading = true;
+  },
+  successUpdateSignature: (state: UserState) => {
+    state.isLoading = false;
+  },
+  failureUpdateSignature: (state: UserState) => {
+    state.isLoading = false;
   },
 };
 

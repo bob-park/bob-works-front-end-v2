@@ -29,6 +29,10 @@ const {
   requestUpdateUserAvatar,
   successUpdateUserAvatar,
   failureUpdateUserAvatar,
+  // update signature
+  requestUpdateSignature,
+  successUpdateSignature,
+  failureUpdateSignature,
 } = userActions;
 
 function* callGetUser(action: ReturnType<typeof requestGetUser>) {
@@ -108,10 +112,42 @@ function* watchUpdateUserAvatar() {
   yield takeLatest(requestUpdateUserAvatar, callUpdateUserAvatar);
 }
 
+// update signature
+function* callUpdateSignature(
+  action: ReturnType<typeof requestUpdateSignature>,
+) {
+  const { id, formData, exceptionHandle, handleAfter } = action.payload;
+
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<User> = yield call(
+    postCall,
+    `/api/user/${id}/document/signature`,
+    formData,
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successUpdateUserAvatar());
+
+    handleAfter && handleAfter();
+  } else {
+    yield failureActionProceed(
+      response,
+      failureUpdateUserAvatar,
+      handleAuthError,
+    );
+  }
+}
+
+function* watchRequestUpdateSignature() {
+  yield takeLatest(requestUpdateSignature, callUpdateSignature);
+}
+
 export default function* userSagas() {
   yield all([
     fork(watchLoggedIn),
     fork(watchGetUsableAlternativeVacation),
     fork(watchUpdateUserAvatar),
+    fork(watchRequestUpdateSignature),
   ]);
 }
