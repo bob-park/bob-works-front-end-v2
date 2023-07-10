@@ -80,7 +80,7 @@ const UserSettings = () => {
           dispatch(
             addAlert({
               level: 'info',
-              message: '사용자 결제 서명이 변경되었습니다.',
+              message: '사용자 결재 서명이 변경되었습니다.',
               createAt: new Date(),
             }),
           );
