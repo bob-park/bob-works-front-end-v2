@@ -232,13 +232,13 @@ function App({ Component, pageProps }: AppProps) {
                   online
                 />
                 <Dropdown.Menu className="w-48 bg-base-100 shadow-xl ">
-                  <Dropdown.Item>
-                    <GrNotification />
-                    공지
-                    <Badge size="sm" color="secondary">
-                      준비중
-                    </Badge>
-                  </Dropdown.Item>
+                  <li>
+                    <Link href="/notice">
+                      <GrNotification />
+                      공지
+                    </Link>
+                  </li>
+
                   <hr />
 
                   <li>
