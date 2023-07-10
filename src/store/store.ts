@@ -1,13 +1,22 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import createSagaMiddleware, { Task } from 'redux-saga';
-import { createWrapper } from 'next-redux-wrapper';
+import createSagaMiddleware from 'redux-saga';
+import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 
 import rootSaga from './saga';
 
+// common
+import { COMMON, commonReducer } from './common';
+
+// user
 import { USER, userReducer } from './user';
 
+// document
+import { DOCUMENT, documentReducer } from './document';
+
 const rootReducer = combineReducers({
-  [USER]: userReducer,
+  user: userReducer,
+  document: documentReducer,
+  common: commonReducer,
 });
 
 function rootStore() {
@@ -25,7 +34,7 @@ function rootStore() {
   return store;
 }
 
-const store = rootStore();
+export const store = rootStore();
 
 export type RootState = ReturnType<typeof rootReducer>;
 

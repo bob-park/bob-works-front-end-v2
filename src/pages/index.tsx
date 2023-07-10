@@ -1,9 +1,34 @@
 // daisyui
 import { Stats } from 'react-daisyui';
 
+// hooks
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
+import { GetServerSideProps } from 'next';
+
+// store
+import { wrapper } from '@/store/store';
+import { userActions } from '@/store/user';
+
+import axios from 'axios';
+
+const { requestGetUser } = userActions;
+
 const Stat = Stats.Stat;
 
-export default function Home() {
+function Home() {
+  // store
+  const { user } = useAppSelector((state) => state.user);
+
+  const generalVacation = {
+    total: user?.nowVacation?.general.totalCount || 0,
+    used: user?.nowVacation?.general.usedCount || 0,
+  };
+
+  const alternativeVacation = {
+    total: user?.nowVacation?.alternative.totalCount || 0,
+    used: user?.nowVacation?.alternative.usedCount || 0,
+  };
+
   return (
     <main>
       <div className="grid grid-cols-1 gap-10">
@@ -11,43 +36,49 @@ export default function Home() {
           <Stats.Stat className="w-48">
             <Stat.Item variant="title">연차 개수</Stat.Item>
             <Stat.Item variant="value" className="text-primary">
-              15
+              {generalVacation.total}
             </Stat.Item>
           </Stats.Stat>
 
           <Stats.Stat className="w-48">
             <Stat.Item variant="title">사용한 수</Stat.Item>
             <Stat.Item variant="value" className="text-secondary">
-              6
+              {generalVacation.used}
             </Stat.Item>
           </Stats.Stat>
 
           <Stats.Stat className="w-48">
             <Stat.Item variant="title">남은 수</Stat.Item>
-            <Stat.Item variant="value">9</Stat.Item>
+            <Stat.Item variant="value">
+              {generalVacation.total - generalVacation.used}
+            </Stat.Item>
           </Stats.Stat>
         </Stats>
         <Stats className="shadow font-sans" horizontal>
           <Stats.Stat className="w-48">
             <Stat.Item variant="title">대체 휴가 개수</Stat.Item>
             <Stat.Item variant="value" className="text-primary">
-              7
+              {alternativeVacation.total}
             </Stat.Item>
           </Stats.Stat>
 
           <Stats.Stat className="w-48">
             <Stat.Item variant="title">사용한 수</Stat.Item>
             <Stat.Item variant="value" className="text-secondary">
-              0.5
+              {alternativeVacation.used}
             </Stat.Item>
           </Stats.Stat>
 
           <Stats.Stat className="w-48">
             <Stat.Item variant="title">남은 수</Stat.Item>
-            <Stat.Item variant="value">6.5</Stat.Item>
+            <Stat.Item variant="value">
+              {alternativeVacation.total - alternativeVacation.used}
+            </Stat.Item>
           </Stats.Stat>
         </Stats>
       </div>
     </main>
   );
 }
+
+export default Home;

@@ -1,4 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
+import { ExceptionHandle } from '../types';
 
 const reducers = {
   requestGetUser: (
@@ -21,6 +22,60 @@ const reducers = {
     state.user = undefined;
     state.isLoading = false;
     state.isLoggedIn = false;
+  },
+
+  // get alternative vacation list
+  requestGetUsableAlternativeVacation: (
+    state: UserState,
+    action: PayloadAction<{ handleAuthException?: () => void }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successGetUsableAlternativeVacation: (
+    state: UserState,
+    action: PayloadAction<AlternativeVacation[]>,
+  ) => {
+    state.isLoading = false;
+    state.alternativeVacations = action.payload;
+  },
+  failureGetUsableAlternativeVacation: (state: UserState) => {
+    state.isLoading = false;
+  },
+
+  // update avatar
+  requestUpdateUserAvatar: (
+    state: UserState,
+    action: PayloadAction<{
+      formData: FormData;
+      handleAfter?: () => void;
+      exceptionHandle: ExceptionHandle;
+    }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successUpdateUserAvatar: (state: UserState) => {
+    state.isLoading = false;
+  },
+  failureUpdateUserAvatar: (state: UserState) => {
+    state.isLoading = false;
+  },
+  // update signature
+  requestUpdateSignature: (
+    state: UserState,
+    action: PayloadAction<{
+      id: number;
+      formData: FormData;
+      handleAfter?: () => void;
+      exceptionHandle: ExceptionHandle;
+    }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successUpdateSignature: (state: UserState) => {
+    state.isLoading = false;
+  },
+  failureUpdateSignature: (state: UserState) => {
+    state.isLoading = false;
   },
 };
 
