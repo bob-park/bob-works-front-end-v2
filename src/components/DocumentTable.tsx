@@ -15,8 +15,8 @@ type DocumentTableProps = {
   headers: DocumentTableHeader[];
   dataList?: ({ id: number; type: DocumentsType } & any)[];
   checkedList?: number[];
-  onRowClick?: (id: number, type: DocumentType) => void;
-  onChecked?: (id: number, checked: boolean) => void;
+  onRowClick?: (id: any, type: DocumentType) => void;
+  onChecked?: (id: any, checked: boolean) => void;
   onCheckedAll?: (checked: boolean) => void;
 };
 

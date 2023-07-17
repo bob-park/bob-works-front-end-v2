@@ -249,7 +249,7 @@ function App({ Component, pageProps }: AppProps) {
                     <Link href="/notice">
                       <GrNotification />
                       공지{' '}
-                      {countOfUnread && (
+                      {!!countOfUnread && (
                         <Badge color="secondary">+{countOfUnread}</Badge>
                       )}
                     </Link>

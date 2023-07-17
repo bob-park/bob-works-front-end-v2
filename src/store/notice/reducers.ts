@@ -62,19 +62,41 @@ const reducers = {
 
     const index = state.contents.content.findIndex((item) => item.id === id);
 
-    if (index > 0) {
+    if (index >= 0) {
       const readNotice = state.contents.content[index];
 
       state.contents.content[index] = {
         ...readNotice,
         isRead: true,
       };
+
+      state.countOfUnread -= 1;
     }
 
     state.isLoading = false;
-    state.countOfUnread -= 1;
   },
   failureReadNotice: (state: NoticeState) => {
+    state.isLoading = false;
+  },
+  // get notice
+  requestGetNotice: (
+    state: NoticeState,
+    action: PayloadAction<{
+      id: string;
+      exceptionHandle: ExceptionHandle;
+      handleAfter?: () => void;
+    }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successGetNotice: (
+    state: NoticeState,
+    action: PayloadAction<Notice | undefined>,
+  ) => {
+    state.isLoading = false;
+    state.detail = action.payload;
+  },
+  failureGetNotice: (state: NoticeState) => {
     state.isLoading = false;
   },
 };

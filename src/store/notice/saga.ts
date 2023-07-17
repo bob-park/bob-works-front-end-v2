@@ -25,6 +25,10 @@ const {
   requestReadNotice,
   successReadNotice,
   failureReadNotice,
+  // get notice
+  requestGetNotice,
+  successGetNotice,
+  failureGetNotice,
 } = noticeActions;
 
 // search
@@ -103,10 +107,35 @@ function* watchRequestReadNotice() {
   yield takeLatest(requestReadNotice, callReadNotice);
 }
 
+// get notice
+function* callGetNotice(action: ReturnType<typeof requestGetNotice>) {
+  const { id, exceptionHandle, handleAfter } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<Notice> = yield call(
+    getCall,
+    `/api/notice/${id}`,
+    null,
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successGetNotice(response.data));
+
+    handleAfter && handleAfter();
+  } else {
+    yield failureActionProceed(response, failureGetNotice, handleAuthError);
+  }
+}
+
+function* watchRequestGetNotice() {
+  yield takeLatest(requestGetNotice, callGetNotice);
+}
+
 export default function* noticeSagas() {
   yield all([
     fork(watchRequestSearchNotice),
     fork(watchRequestCountOfUnread),
     fork(watchRequestReadNotice),
+    fork(watchRequestGetNotice),
   ]);
 }
