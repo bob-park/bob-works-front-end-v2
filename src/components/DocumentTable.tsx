@@ -7,7 +7,7 @@ type DocumentTableHeader = {
   id: string;
   value: string;
   checkbox?: boolean;
-  parse?: (input: any) => any;
+  parse?: (input: any, row?: any) => any;
 };
 
 type DocumentTableProps = {
@@ -87,7 +87,7 @@ export default function DocumentTable({
                 />
               ) : (
                 <span key={`${head.id}_${data.id}`}>
-                  {head.parse ? head.parse(data[head.id]) : data[head.id]}
+                  {head.parse ? head.parse(data[head.id], data) : data[head.id]}
                 </span>
               ),
             )}
