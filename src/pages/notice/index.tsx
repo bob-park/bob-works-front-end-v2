@@ -13,6 +13,8 @@ import DocumentTable from '@/components/DocumentTable';
 import DocumentPagination from '@/components/DocumentPagination';
 import { getTotalPageCount } from '@/utils/paginationUtils';
 import { PaginationParams } from '@/store/types';
+import { Badge } from 'react-daisyui';
+import { Notice } from '@/store/notice/types';
 
 // actions
 const { requestSearchNotice } = noticeActions;
@@ -25,6 +27,12 @@ const headers = [
   {
     id: 'title',
     value: '제목',
+    parse: (input: string, row: Notice) => (
+      <span>
+        <span className="pr-2">{input}</span>
+        {!row.isRead && <Badge color="secondary">new</Badge>}
+      </span>
+    ),
   },
   {
     id: 'createdDate',
