@@ -13,10 +13,14 @@ import { USER, userReducer } from './user';
 // document
 import { DOCUMENT, documentReducer } from './document';
 
+// notice
+import { NOTICE, noticeReducer } from './notice';
+
 const rootReducer = combineReducers({
   user: userReducer,
   document: documentReducer,
   common: commonReducer,
+  notice: noticeReducer,
 });
 
 function rootStore() {
