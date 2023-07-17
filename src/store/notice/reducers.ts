@@ -26,6 +26,27 @@ const reducers = {
   failureSearchNotice: (state: NoticeState) => {
     state.isLoading = false;
   },
+  // count of unread
+  requestCountOfUnread: (
+    state: NoticeState,
+    action: PayloadAction<{
+      exceptionHandle: ExceptionHandle;
+    }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successCountOfUnread: (
+    state: NoticeState,
+    action: PayloadAction<{ count: number }>,
+  ) => {
+    const { count } = action.payload;
+
+    state.isLoading = false;
+    state.countOfUnread = count;
+  },
+  failureCountOfUnread: (state: NoticeState) => {
+    state.isLoading = false;
+  },
 };
 
 export default reducers;

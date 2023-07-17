@@ -5,6 +5,7 @@ type NoticeState = {
   searchParams: PaginationParams;
   contents: Pageable<Notice>;
   detail?: Notice;
+  countOfUnread: number;
 };
 
 type Notice = {

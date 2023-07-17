@@ -6,6 +6,7 @@ import { NoticeState } from './types';
 
 const initialState: NoticeState = {
   isLoading: false,
+  countOfUnread: 0,
   searchParams: {
     page: 0,
     size: 10,

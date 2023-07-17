@@ -17,6 +17,10 @@ const {
   requestSearchNotice,
   successSearchNotice,
   failureSearchNotice,
+  // count of unread
+  requestCountOfUnread,
+  successCountOfUnread,
+  failureCountOfUnread,
 } = noticeActions;
 
 // search
@@ -41,7 +45,7 @@ function* callSearchNotice(action: ReturnType<typeof requestSearchNotice>) {
       ),
     );
   } else {
-    yield failureActionProceed(response, null, handleAuthError);
+    yield failureActionProceed(response, failureSearchNotice, handleAuthError);
   }
 }
 
@@ -49,6 +53,28 @@ function* watchRequestSearchNotice() {
   yield takeLatest(requestSearchNotice, callSearchNotice);
 }
 
+// count of unread
+function* callCountOfUnread(action: ReturnType<typeof requestCountOfUnread>) {
+  const { exceptionHandle } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<{ count: number }> = yield call(
+    getCall,
+    '/api/notice/count/unread',
+    null,
+  );
+
+  if ((response.state = 'SUCCESS')) {
+    yield put(successCountOfUnread(response.data || { count: 0 }));
+  } else {
+    yield failureActionProceed(response, failureCountOfUnread, handleAuthError);
+  }
+}
+
+function* watchRequestCountOfUnread() {
+  yield takeLatest(requestCountOfUnread, callCountOfUnread);
+}
+
 export default function* noticeSagas() {
-  yield all([fork(watchRequestSearchNotice)]);
+  yield all([fork(watchRequestSearchNotice), fork(watchRequestCountOfUnread)]);
 }
