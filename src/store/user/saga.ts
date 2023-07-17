@@ -36,12 +36,14 @@ const {
 } = userActions;
 
 function* callGetUser(action: ReturnType<typeof requestGetUser>) {
-  const { exceptionHandle } = action.payload;
+  const { exceptionHandle, handleAfter } = action.payload;
 
   const response: ApiResponse<User> = yield call(getCall, '/api/user', null);
 
   if (response.state === 'SUCCESS') {
     yield put(successGetUser(response.data));
+
+    handleAfter && handleAfter();
   } else {
     yield failureActionProceed(response, null, exceptionHandle);
   }

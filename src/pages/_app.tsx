@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
 import { wrapper } from '@/store/store';
 import { commonActions } from '@/store/common';
 import { userActions } from '@/store/user';
+import { noticeActions } from '@/store/notice';
 
 // react-icon
 import { LuLayoutDashboard, LuLogOut } from 'react-icons/lu';
@@ -46,6 +47,7 @@ import {
 // user actions
 const { readAlert } = commonActions;
 const { requestGetUser } = userActions;
+const { requestCountOfUnread } = noticeActions;
 
 function getSystemAlertIcon(level: SystemAlertLevel) {
   switch (level) {
@@ -67,9 +69,10 @@ function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   // store
+  const dispatch = useAppDispatch();
   const { alerts } = useAppSelector((state) => state.common);
   const { user } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
+  const { countOfUnread } = useAppSelector((state) => state.notice);
 
   // useeffect
   useEffect(() => {
@@ -80,6 +83,15 @@ function App({ Component, pageProps }: AppProps) {
       requestGetUser({
         exceptionHandle: () =>
           router.push('/api/oauth2/authorization/bob-works'),
+        handleAfter: () => {
+          dispatch(
+            requestCountOfUnread({
+              exceptionHandle: {
+                handleAuthError: handleLogout,
+              },
+            }),
+          );
+        },
       }),
     );
   }, []);
@@ -236,7 +248,10 @@ function App({ Component, pageProps }: AppProps) {
                   <li>
                     <Link href="/notice">
                       <GrNotification />
-                      공지
+                      공지{' '}
+                      {countOfUnread && (
+                        <Badge color="secondary">+{countOfUnread}</Badge>
+                      )}
                     </Link>
                   </li>
 
