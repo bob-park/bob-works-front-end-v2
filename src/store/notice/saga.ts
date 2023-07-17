@@ -21,6 +21,10 @@ const {
   requestCountOfUnread,
   successCountOfUnread,
   failureCountOfUnread,
+  // read notice
+  requestReadNotice,
+  successReadNotice,
+  failureReadNotice,
 } = noticeActions;
 
 // search
@@ -75,6 +79,34 @@ function* watchRequestCountOfUnread() {
   yield takeLatest(requestCountOfUnread, callCountOfUnread);
 }
 
+// read notice
+function* callReadNotice(action: ReturnType<typeof requestReadNotice>) {
+  const { id, exceptionHandle } = action.payload;
+  const { handleAuthError } = exceptionHandle;
+
+  const response: ApiResponse<{ id: string }> = yield call(
+    putCall,
+    `/api/notice/${id}/read`,
+    {
+      id,
+    },
+  );
+
+  if (response.state === 'SUCCESS') {
+    yield put(successReadNotice({ id }));
+  } else {
+    yield failureActionProceed(response, failureReadNotice, handleAuthError);
+  }
+}
+
+function* watchRequestReadNotice() {
+  yield takeLatest(requestReadNotice, callReadNotice);
+}
+
 export default function* noticeSagas() {
-  yield all([fork(watchRequestSearchNotice), fork(watchRequestCountOfUnread)]);
+  yield all([
+    fork(watchRequestSearchNotice),
+    fork(watchRequestCountOfUnread),
+    fork(watchRequestReadNotice),
+  ]);
 }

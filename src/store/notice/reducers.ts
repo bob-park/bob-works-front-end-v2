@@ -47,6 +47,36 @@ const reducers = {
   failureCountOfUnread: (state: NoticeState) => {
     state.isLoading = false;
   },
+  // read notice
+  requestReadNotice: (
+    state: NoticeState,
+    action: PayloadAction<{ id: string; exceptionHandle: ExceptionHandle }>,
+  ) => {
+    state.isLoading = true;
+  },
+  successReadNotice: (
+    state: NoticeState,
+    action: PayloadAction<{ id: string }>,
+  ) => {
+    const { id } = action.payload;
+
+    const index = state.contents.content.findIndex((item) => item.id === id);
+
+    if (index > 0) {
+      const readNotice = state.contents.content[index];
+
+      state.contents.content[index] = {
+        ...readNotice,
+        isRead: true,
+      };
+    }
+
+    state.isLoading = false;
+    state.countOfUnread -= 1;
+  },
+  failureReadNotice: (state: NoticeState) => {
+    state.isLoading = false;
+  },
 };
 
 export default reducers;
