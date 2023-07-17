@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 
 import DocumentTable from '@/components/DocumentTable';
 import DocumentPagination from '@/components/DocumentPagination';
-import { getTotalPageCount } from '../../utils/paginationUtils';
+import { getTotalPageCount } from '@/utils/paginationUtils';
 import { PaginationParams } from '@/store/types';
 
 // actions
