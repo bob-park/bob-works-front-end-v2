@@ -65,12 +65,14 @@ const reducers = {
     if (index >= 0) {
       const readNotice = state.contents.content[index];
 
+      if (!readNotice.isRead) {
+        state.countOfUnread -= 1;
+      }
+
       state.contents.content[index] = {
         ...readNotice,
         isRead: true,
       };
-
-      state.countOfUnread -= 1;
     }
 
     state.isLoading = false;
