@@ -2,7 +2,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 // next
-import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 
 // daisyui
@@ -13,6 +12,7 @@ import { GrEdit } from 'react-icons/gr';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook';
+import useLogout from '@/hooks/useLogout';
 
 // store
 import { userActions } from '@/store/user';
@@ -24,7 +24,9 @@ const { addAlert } = commonActions;
 
 const UserSettings = () => {
   // router
-  const router = useRouter();
+  // const router = useRouter();
+  // hooks
+  const logout = useLogout();
 
   // store
   const dispatch = useAppDispatch();
@@ -48,9 +50,9 @@ const UserSettings = () => {
     return null;
   }
 
-  const handleLogout = () => {
-    router.push('/api/logout');
-  };
+  // const handleLogout = () => {
+  //   router.push('/api/logout');
+  // };
 
   const handleEditClick = () => {
     signatureInputRef.current?.click();
@@ -86,7 +88,7 @@ const UserSettings = () => {
           );
         },
         exceptionHandle: {
-          handleAuthError: handleLogout,
+          handleAuthError: logout,
         },
       }),
     );

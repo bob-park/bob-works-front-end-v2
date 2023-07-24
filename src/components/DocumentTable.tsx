@@ -7,7 +7,7 @@ type DocumentTableHeader = {
   id: string;
   value: string;
   checkbox?: boolean;
-  parse?: (input: any) => any;
+  parse?: (input: any, row?: any) => any;
 };
 
 type DocumentTableProps = {
@@ -15,8 +15,8 @@ type DocumentTableProps = {
   headers: DocumentTableHeader[];
   dataList?: ({ id: number; type: DocumentsType } & any)[];
   checkedList?: number[];
-  onRowClick?: (id: number, type: DocumentType) => void;
-  onChecked?: (id: number, checked: boolean) => void;
+  onRowClick?: (id: any, type: DocumentType) => void;
+  onChecked?: (id: any, checked: boolean) => void;
   onCheckedAll?: (checked: boolean) => void;
 };
 
@@ -87,7 +87,7 @@ export default function DocumentTable({
                 />
               ) : (
                 <span key={`${head.id}_${data.id}`}>
-                  {head.parse ? head.parse(data[head.id]) : data[head.id]}
+                  {head.parse ? head.parse(data[head.id], data) : data[head.id]}
                 </span>
               ),
             )}

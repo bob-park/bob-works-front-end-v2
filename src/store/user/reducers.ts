@@ -4,7 +4,10 @@ import { ExceptionHandle } from '../types';
 const reducers = {
   requestGetUser: (
     state: UserState,
-    action: PayloadAction<{ exceptionHandle?: () => void }>,
+    action: PayloadAction<{
+      handleAfter?: () => void;
+      exceptionHandle?: () => void;
+    }>,
   ) => {
     state.isLoading = true;
     state.isLoggedIn = false;
