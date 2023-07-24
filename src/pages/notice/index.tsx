@@ -156,7 +156,9 @@ export default function Notice() {
             </div>
           </div>
         </Modal.Header>
-        <Modal.Body>{detail?.description}</Modal.Body>
+        <Modal.Body>
+          <pre>{detail?.description}</pre>
+        </Modal.Body>
         <Modal.Actions>
           <Button color="primary" onClick={() => setShowNoticeDetail(false)}>
             확인
